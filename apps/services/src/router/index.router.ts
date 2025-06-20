@@ -7,9 +7,7 @@ const router = express.Router()
 
 router.get('/', async (req, res, next) => {
   res.locals.body = {
-    request_uid: res.locals.requestUID,
     service: '',
-    version: process.env.VERSION,
     environment: process.env.ENVIRONMENT,
     current_date: new Date(),
     database: sequelize.authenticate().then(() => ('connected')).catch(() => ('disconnected')),

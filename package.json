@@ -3,6 +3,9 @@
   "private": true,
   "scripts": {
     "build": "turbo run build",
+    "mg:up": "npx sequelize-cli db:migrate",
+    "mg:down": "npx sequelize-cli db:migrate:undo",
+    "mg:gen": "npx sequelize-cli migration:generate --name ",
     "dev": "turbo run dev",
     "dev:test": "turbo run dev --parallel --filter=web... --filter=services...",
     "lint": "turbo run lint",

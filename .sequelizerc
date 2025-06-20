@@ -1,0 +1,14 @@
+const path = require('path')
+const dotenv = require('dotenv')
+
+const envPath = path.resolve(process.cwd(), 'packages', 'libs', '.env')
+const envLocal = path.resolve(process.cwd(), 'packages', 'libs', '.env.local')
+dotenv.config({ path: envPath })
+dotenv.config({ path: envLocal })
+
+module.exports = {
+  'config': path.resolve('sequelize', 'config.js'),
+  'models-path': path.resolve('packages', 'libs', 'models'),
+  'seeders-path': path.resolve('sequelize', 'seeders'),
+  'migrations-path': path.resolve('sequelize', 'migrations')
+}

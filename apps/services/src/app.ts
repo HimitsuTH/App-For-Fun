@@ -12,7 +12,6 @@ import redisHelper from 'libs/helpers/redis.helper';
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-
 app.use(router)
 
 app.use(session({
@@ -23,8 +22,5 @@ app.use(session({
 }));
 
 
-app.get('/', (req, res) => {
-  console.log('Hello world')
-});
 
 export default app

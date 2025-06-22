@@ -4,7 +4,7 @@ import * as path from 'path'
 
 import * as winston from 'winston'
 
-const loger: winston.Logger = winston.createLogger({
+const logger: winston.Logger = winston.createLogger({
   transports: [
     new winston.transports.Console({
       format: winston.format.combine(
@@ -27,4 +27,4 @@ const loger: winston.Logger = winston.createLogger({
   ],
 })
 
-export default loger
+export default logger

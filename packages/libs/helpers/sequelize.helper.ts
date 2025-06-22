@@ -9,7 +9,7 @@ const sequelize = new Sequelize(process.env.DB as string, process.env.DB_USERNAM
 
 
 sequelize.authenticate()
-  .then(() => winston.info('Database Connected'))
+  .then(() => winston.info(`Database Connected ${process.env.DB_HOST}:${process.env.DB_PORT}`))
   .catch((err: any) => winston.error(`Unable to connect to database with ${process.env.DB_HOST}:${process.env.DB_PORT}`, err))
 
 export default sequelize

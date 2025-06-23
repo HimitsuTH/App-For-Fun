@@ -1,17 +1,15 @@
-import express from 'express'
-import indexRouter from './index.router'
-import authRouter from './auth.router'
-import middlewareHelper from 'libs/helpers/middleware.helper'
+import express from "express";
+import indexRouter from "./index.router";
+import authRouter from "./auth.router";
+import middlewareHelper from "libs/helpers/middleware.helper";
 
-const router = express.Router()
+const router = express.Router();
 
-router.use('/', indexRouter)
-router.use('/api/v1/auth', authRouter)
+router.use("/", indexRouter);
+router.use("/api/v1/auth", authRouter);
 
+router.get("/ping", (req, res) => {
+  res.json({ test: "pong" });
+});
 
-router.get('/ping', (req, res) => {
-  res.json({test:'pong'})
-})
-
-
-export default router
+export default router;

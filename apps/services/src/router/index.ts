@@ -1,6 +1,7 @@
 import express from 'express'
 import indexRouter from './index.router'
 import authRouter from './auth.router'
+import middlewareHelper from 'libs/helpers/middleware.helper'
 
 const router = express.Router()
 

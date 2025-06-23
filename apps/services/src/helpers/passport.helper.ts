@@ -1,9 +1,12 @@
 import passport from "passport";
 import logger from "libs/helpers/winston.helper";
-// import bcrypt from "bcrypt"
+import { Op } from 'sequelize'
+import bcrypt from "bcrypt"
 
 import passportLocal from "passport-local"
 import { Users } from 'libs/models'
+
+const userAttributes = ['id', 'email', 'username','password','invalid_password_time']
 
 
 const LocalStrategy = passportLocal.Strategy
@@ -11,18 +14,26 @@ const LocalStrategy = passportLocal.Strategy
 passport.use(new LocalStrategy({passReqToCallback: true},
    async function(req, username, password, done) {
     try{
-      const user = await Users.findOne({where: {
-        email: 1
-      }})
+      let _user:any
+      const user = await Users.findOne({
+        where: {
+          [Op.or]: [
+            { username: username },
+            { email: username }
+          ]
+        }
+      })
+      if (!user) throw new Error('Auth failed...')
 
-      console.log('test----------------------1---------->')
-
-        console.log('test-----------------------2--------->')
-        console.log(user)
+      if(!bcrypt.compare(user.password,password)) throw new Error('Password weng worng!')
+      
+      _user = user.toJSON()
       const userInfo ={
-        ...user
+        ..._user,
+        password: undefined,
       }
-      done(null, {userInfo})
+
+      done(null, { ...userInfo })
     }catch (err) {
       logger.error('login failed...')
       logger.error(err)
@@ -30,6 +41,40 @@ passport.use(new LocalStrategy({passReqToCallback: true},
     }
   } 
 ));
+
+passport.serializeUser((user, done)  => {
+    try {
+      done(null, user)
+    } catch (err) {
+      done(err)
+    }
+})
+
+passport.deserializeUser(async (user:any, done) =>  {
+  try {
+    if (!user) throw new Error('401 auth failed..')
+    let _user: any
+
+    const checkUser = await Users.findOne({
+      attributes: userAttributes,
+      where: {
+        id: user.id
+      }
+    })
+    if (!checkUser) throw new Error('401 auth failed..')
+    _user = checkUser.toJSON()
+
+    const userInfo = {
+      ..._user,
+      passport: undefined
+    }
+
+    done(null, { ...userInfo, redireact_path: '/' })
+
+  } catch (err) {
+    done(err)
+  }
+})
 
 
 

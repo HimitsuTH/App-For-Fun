@@ -5,6 +5,7 @@ const sequelize = new Sequelize(process.env.DB as string, process.env.DB_USERNAM
   host: process.env.DB_HOST,
   port: Number(process.env.DB_PORT as string),
   dialect: process.env.DB_DIALECT as 'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mssql',
+  logging: undefined
 });
 
 

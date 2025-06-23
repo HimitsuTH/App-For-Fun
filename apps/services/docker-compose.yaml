@@ -6,7 +6,7 @@ services:
 #     container_name: node
 #     ports:
 #       - "8000:8000"
- db:
+  db:
     container_name: db
     image: mysql:8.1
     # command: --default-authentication-plugin=mysql_native_password
@@ -19,7 +19,12 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - mysql_data:/var/lib/mysql
+        - mysql_data:/var/lib/mysql
+  redis:
+    image: redis:latest
+    container_name: redis-container
+    ports:
+      - "6379:6379"
 
 volumes:
   mysql_data: # กำหนดชื่อ volume ที่ต้องการจะสร้าง

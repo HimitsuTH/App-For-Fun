@@ -24,8 +24,8 @@ passport.use(new LocalStrategy({passReqToCallback: true},
         }
       })
       if (!user) throw new Error('Auth failed...')
-
-      if(!bcrypt.compare(user.password,password)) throw new Error('Password weng worng!')
+      const matchPassword = await bcrypt.compare(user.password,password)
+      if(!matchPassword ) throw new Error('Password weng worng!')
       
       _user = user.toJSON()
       const userInfo ={

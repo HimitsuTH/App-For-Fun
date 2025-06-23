@@ -1,14 +1,14 @@
 import sequelize from 'libs/helpers/sequelize.helper'
 import { DataTypes, Model } from 'sequelize'
 
-export class Users extends Model {
+export class Category extends Model {
   id!: number
   name!:string
   description!: string
   created_at!: Date
 }
 
-Users.init(
+Category.init(
   {
     name: {
       type: DataTypes.STRING(50),

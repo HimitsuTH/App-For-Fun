@@ -5,10 +5,6 @@ import middleware from "libs/helpers/middleware.helper";
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  res.send("test......");
-});
-
 router.post("/login",
   middleware.checkLoginSession,
   passportHelper.authenticate("local", {

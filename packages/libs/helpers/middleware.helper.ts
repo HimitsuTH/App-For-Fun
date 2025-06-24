@@ -19,7 +19,7 @@ const checkActiveSession = async (req : Request , res: Response, next: NextFunct
         const currentSessionID = req.sessionID
         const user: any = req.user
         const activeSessionID = await redisHelper.get(`user:${user.email}`)
-        if (!activeSessionID || currentSessionID !== activeSessionID) throw new Error('checkActiveSession fail...')
+        if (!activeSessionID || currentSessionID !== activeSessionID) throw new Error('422 The request was reject...')
     } catch (err) {
         next(err)
     }

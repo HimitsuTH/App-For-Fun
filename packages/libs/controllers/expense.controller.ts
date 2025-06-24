@@ -30,6 +30,7 @@ const getExpense = async (req: Request, res: Response, next: NextFunction) => {
         next()
     } catch (err) {
         logger.error(err)
+        next(err)
     }
 }
 
@@ -52,10 +53,11 @@ const addExpense = async (req: Request, res: Response, next: NextFunction) => {
         }, { transaction })
 
         await transaction.commit()
-
+        next()
     } catch (err) {
         logger.info('------CAN NOT ADD EXPENSE-----',err)
         await transaction.rollback()
+        next(err)
     }
 }
 

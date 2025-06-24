@@ -10,7 +10,7 @@ const localRegister = async (
   next: NextFunction
 ) => {
   const transaction = await sequelize.transaction();
-  const { email, username, password } = req.body;
+  const { email, username, password, role_id = 2 } = req.body;
   try {
     const hasEmail = await Users.findOne({
       where: {
@@ -27,6 +27,7 @@ const localRegister = async (
         username: username,
         password: hashPassword,
         email: email,
+        role_id: role_id
       },
       { transaction }
     );

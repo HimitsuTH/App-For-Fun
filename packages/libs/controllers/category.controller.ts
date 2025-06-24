@@ -13,6 +13,7 @@ const getCategory = async (req: Request, res: Response, next: NextFunction) => {
         next()
     } catch (err) {
         logger.error(err)
+        next(err)
     }
 }
 
@@ -31,10 +32,11 @@ const addCategory = async (req: Request, res: Response, next: NextFunction) => {
         }, { transaction })
 
         await transaction.commit()
-
+        next()
     } catch (err) {
         logger.info('------CAN NOT ADD CATEGORY-----',err)
         await transaction.rollback()
+        next(err)
     }
 }
 

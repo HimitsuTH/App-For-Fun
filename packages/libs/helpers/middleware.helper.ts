@@ -1,13 +1,11 @@
 import { NextFunction, Request, Response } from 'express'
 import redisHelper from './redis.helper'
-import { Users } from '../models'
+import { Users, Roles } from '../models'
 
 const checkLoginSession = async (req: Request, res: Response, next:NextFunction) => {
     try { 
         const user = req.user
-        if (user) {
-            throw new Error('422 The request was rejected...')
-        }
+        if (user) throw new Error('422 The request was rejected...')
         next()
     } catch (err) {
         next(err)
@@ -39,8 +37,32 @@ const setActiveSession = async (req: Request, res: Response, next: NextFunction)
     }
 }
 
+const checkRole = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const user: any = req.user
+        if (!user) throw new Error('422 The request was rejected...')
+
+        const role = await Roles.findOne({
+            where: {
+                id: user.role_id
+            }
+        })
+        if (!role) throw new Error('404 user not found...')
+
+        if (role.name !== "admin") {
+            throw new Error('422 The request was rejected...')
+        }
+        next()
+    } catch (err) {
+        next(err)
+    }
+    
+    
+}
+
 export default {
     checkLoginSession,
     checkActiveSession,
-    setActiveSession
+    setActiveSession,
+    checkRole
 }

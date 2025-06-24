@@ -4,7 +4,7 @@ import { Op } from "sequelize";
 import bcrypt from "bcrypt";
 
 import passportLocal from "passport-local";
-import { Users } from "libs/models";
+import { Roles, Users } from "libs/models";
 
 const userAttributes = [
   "id",
@@ -29,6 +29,15 @@ passport.use(
         where: {
           [Op.or]: [{ username: username }, { email: username }],
         },
+        include: [
+            {
+                model: Roles,
+                as: 'role',
+                attributes: [
+                    'name'
+                ]
+            }
+        ]
       });
       if (!user) throw new Error("Auth failed...");
       const matchPassword = await bcrypt.compare(user.password, password);
@@ -38,6 +47,7 @@ passport.use(
       const userInfo = {
         ..._user,
         password: undefined,
+        role: _user.role.name
       };
 
       done(null, { ...userInfo });
@@ -67,6 +77,15 @@ passport.deserializeUser(async (user: any, done) => {
       where: {
         id: user.id,
       },
+      include: [
+            {
+                model: Roles,
+                as: 'role',
+                attributes: [
+                    'name'
+                ]
+            }
+        ]
     });
     if (!checkUser) throw new Error("401 auth failed..");
     _user = checkUser.toJSON();
@@ -74,6 +93,7 @@ passport.deserializeUser(async (user: any, done) => {
     const userInfo = {
       ..._user,
       passport: undefined,
+        role: _user.role.name
     };
 
     done(null, { ...userInfo, redireact_path: "/" });

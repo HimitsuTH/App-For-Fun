@@ -41,7 +41,7 @@ router.post("/logout", async (req, res, next) => {
   });
 });
 
-router.get("/register", 
+router.post("/register", 
     authController.localRegister, 
     async (req, res, next) => {
         res.json({

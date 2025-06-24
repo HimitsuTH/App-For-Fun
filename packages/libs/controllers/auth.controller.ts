@@ -10,14 +10,17 @@ const localRegister = async (
   next: NextFunction
 ) => {
   const transaction = await sequelize.transaction();
+
   const { email, username, password, role_id = 2 } = req.body;
   try {
-    const hasEmail = await Users.findOne({
+    const existsEmail = await Users.findOne({
       where: {
         email: email,
       },
     });
-    if (hasEmail) throw new Error("Email alredy exists.");
+    if (existsEmail) {
+      throw new Error("Email alredy exists.")
+    }
 
     const sait = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(password, sait);
@@ -27,7 +30,8 @@ const localRegister = async (
         username: username,
         password: hashPassword,
         email: email,
-        role_id: role_id
+        role_id: role_id,
+        created_at: new Date()
       },
       { transaction }
     );
@@ -36,6 +40,7 @@ const localRegister = async (
     next();
   } catch (err) {
     await transaction.rollback();
+    next(err)
   }
 };
 

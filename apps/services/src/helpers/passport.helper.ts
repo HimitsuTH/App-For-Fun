@@ -32,7 +32,7 @@ passport.use(
         include: [
             {
                 model: Roles,
-                as: 'role',
+                as: 'roles',
                 attributes: [
                     'name'
                 ]
@@ -40,14 +40,13 @@ passport.use(
         ]
       });
       if (!user) throw new Error("Auth failed...");
-      const matchPassword = await bcrypt.compare(user.password, password);
+      const matchPassword = await bcrypt.compare(password, user.password);
       if (!matchPassword) throw new Error("Password weng worng!");
-
       _user = user.toJSON();
       const userInfo = {
         ..._user,
         password: undefined,
-        role: _user.role.name
+        role: _user.roles.name,
       };
 
       done(null, { ...userInfo });
@@ -80,7 +79,7 @@ passport.deserializeUser(async (user: any, done) => {
       include: [
             {
                 model: Roles,
-                as: 'role',
+                as: 'roles',
                 attributes: [
                     'name'
                 ]
@@ -93,7 +92,7 @@ passport.deserializeUser(async (user: any, done) => {
     const userInfo = {
       ..._user,
       passport: undefined,
-        role: _user.role.name
+        role: _user.roles.name
     };
 
     done(null, { ...userInfo, redireact_path: "/" });

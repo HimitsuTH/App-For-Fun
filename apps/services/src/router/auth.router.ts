@@ -5,10 +5,6 @@ import middleware from "libs/helpers/middleware.helper";
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  res.send("test......");
-});
-
 router.post("/login",
   middleware.checkLoginSession,
   passportHelper.authenticate("local", {
@@ -21,6 +17,7 @@ router.post("/login",
       res_desc: "success",
       ...req.user,
     });
+    next()
   }
 );
 
@@ -39,11 +36,20 @@ router.post("/logout", async (req, res, next) => {
       res.json(res.locals.body);
       next(err);
     } else {
-      next(new Error("loout fail...."));
+      next(new Error("logout fail...."));
     }
   });
 });
 
-router.get("/register", authController.localRegister);
+router.post("/register", 
+    authController.localRegister, 
+    async (req, res, next) => {
+        res.json({
+            res_code: "201",
+            res_desc: "Register Success",
+        });
+        next()
+    }
+);
 
 export default router;

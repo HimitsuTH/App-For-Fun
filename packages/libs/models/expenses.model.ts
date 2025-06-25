@@ -7,7 +7,6 @@ export class Expenses extends Model {
   category_id!: string
   name!:string
   amount!: string
-  expense!: string
   description!: string
   date!: Date
   created_at!: Date
@@ -44,6 +43,9 @@ Expenses.init(
     description: {
       type: DataTypes.STRING(150),
       allowNull: false,
+    },
+    date: {
+      type: DataTypes.DATE,
     },
     created_at: {
       type: DataTypes.DATE,

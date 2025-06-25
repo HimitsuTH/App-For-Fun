@@ -6,7 +6,7 @@ export class Users extends Model {
   username!:string
   password!: string
   email!: string
-  date!: Date
+  role_id!: number
   invalid_password_time!: number
   created_at!: Date
 }
@@ -21,6 +21,13 @@ Users.init(
     },
     email: {
       type: DataTypes.STRING(255)
+    },
+    role_id: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: 'roles',
+        key: 'id',
+      },
     },
     invalid_password_time: {
       type: DataTypes.INTEGER,

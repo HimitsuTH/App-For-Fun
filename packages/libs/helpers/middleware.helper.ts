@@ -3,6 +3,7 @@ import redisHelper from './redis.helper'
 import { Users, Roles } from '../models'
 import { Op } from "sequelize";
 import logger from './winston.helper';
+import { encryption } from './crypto.helper';
 
 const checkLoginSession = async (req: Request, res: Response, next:NextFunction) => {
     try { 
@@ -29,9 +30,10 @@ const checkActiveSession = async (req : Request , res: Response, next: NextFunct
 const setActiveSession = async (req: Request, res: Response, next: NextFunction) => {
     const { username } = req.body
     try { 
+       const _username = encryption(username)
        const user = await Users.findOne({
             where: {
-                [Op.or]: [{ username: username }, { email: username }],
+                [Op.or]: [{ username: _username }, { email: _username }],
             },
        }) 
        if (!user) throw new Error('404 user not found...')

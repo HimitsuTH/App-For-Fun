@@ -5,20 +5,25 @@ import middlewareHelper from 'libs/helpers/middleware.helper'
 
 const router = express.Router()
 
+
+router.get("/ping", (req, res) => {
+  res.json({ test: "pong" });
+});
+
 router.get('/', categoryController.getCategory,
     async (req, res, next) => {
         res.locals.body = {
             res_code: '200',
             res_desc: 'success',
-            category: res.locals.category
+            categories: res.locals.categories
         }
         res.json(res.locals.body)
         next()
   },
 )
 router.post('/', 
-    middlewareHelper.checkRole, 
-    categoryController.addCategory, 
+    middlewareHelper.checkRole,
+    categoryController.addCategories, 
     async (req, res, next) => {
         res.locals.body = {
             res_code: '201',

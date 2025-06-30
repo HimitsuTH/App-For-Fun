@@ -21,7 +21,7 @@ module.exports = {
         category_id: {
           type: Sequelize.INTEGER,
           references: {
-            model: 'category',
+            model: 'categories',
             key: 'id',
           },
         },
@@ -34,7 +34,7 @@ module.exports = {
         type: {
           type: Sequelize.ENUM('INCOME','EXPENSE'),
         },
-        descrition: {
+        description: {
           type: Sequelize.STRING(255),
         },
         date: {

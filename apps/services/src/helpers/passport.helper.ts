@@ -46,7 +46,6 @@ passport.use(
       const userInfo = {
         ..._user,
         password: undefined,
-        role: _user.roles.name,
       };
 
       done(null, { ...userInfo });
@@ -92,7 +91,6 @@ passport.deserializeUser(async (user: any, done) => {
     const userInfo = {
       ..._user,
       passport: undefined,
-        role: _user.roles.name
     };
 
     done(null, { ...userInfo, redireact_path: "/" });

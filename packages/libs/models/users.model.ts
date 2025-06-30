@@ -7,6 +7,7 @@ export class Users extends Model {
   password!: string
   email!: string
   role_id!: number
+  status!: "active" | "inactive"
   invalid_password_time!: number
   created_at!: Date
 }
@@ -31,6 +32,9 @@ Users.init(
     },
     invalid_password_time: {
       type: DataTypes.INTEGER,
+    },
+    status: {
+      type: DataTypes.ENUM("active", "inactive"),
     },
     created_at: {
       type: DataTypes.DATE,

@@ -5,6 +5,7 @@ import bcrypt from "bcrypt";
 
 import passportLocal from "passport-local";
 import { Roles, Users } from "libs/models";
+import { encryption } from "libs/helpers/crypto.helper";
 
 const userAttributes = [
   "id",
@@ -24,10 +25,13 @@ passport.use(
     done
   ) {
     try {
+      console.log(encryption(username))
+      console.log('----------------------------------------')
+      const _username = encryption(username)
       let _user: any;
       const user = await Users.findOne({
         where: {
-          [Op.or]: [{ username: username }, { email: username }],
+          [Op.or]: [{ username: _username }, { email: _username }],
         },
         include: [
             {
@@ -39,17 +43,43 @@ passport.use(
             }
         ]
       });
-      if (!user) throw new Error("Auth failed...");
+      if (!user) {
+         throw new Error("Auth failed...");
+      } 
+      
+      if (user.status === 'inactive') {
+        throw new Error("---------------Please Contact ADMIN For UNLOCK This User---------------");
+      }
+
+    
+
+      if (user.invalid_password_time > 5) {
+        await user.update({
+          status: "inactive"
+        })
+        throw new Error("---------------Limit time to login this user more than 5 pls contact ADMIN---------------");
+      }
+
       const matchPassword = await bcrypt.compare(password, user.password);
-      if (!matchPassword) throw new Error("Password weng worng!");
+      if (!matchPassword) {
+        user.update({
+          invalid_password_time: user.invalid_password_time + 1
+        })
+        throw new Error("Password weng worng!");
+      }
       _user = user.toJSON();
       const userInfo = {
         ..._user,
         password: undefined,
       };
 
+      await user.update({
+          invalid_password_time: null
+      })
+
       done(null, { ...userInfo });
     } catch (err) {
+      console.log(err)
       logger.error("login failed...");
       logger.error(err);
       done(err);

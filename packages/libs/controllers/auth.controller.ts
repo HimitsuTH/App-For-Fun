@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { Users } from "../models";
 import sequelize from "../helpers/sequelize.helper";
+import { encryption } from "../helpers/crypto.helper";
 
 import bcrypt from "bcrypt";
 
@@ -15,7 +16,7 @@ const localRegister = async (
   try {
     const existsEmail = await Users.findOne({
       where: {
-        email: email,
+        email: encryption(email),
       },
     });
     if (existsEmail) {
@@ -27,10 +28,11 @@ const localRegister = async (
 
     await Users.create(
       {
-        username: username,
+        username: encryption(username),
         password: hashPassword,
-        email: email,
+        email: encryption(email),
         role_id: role_id,
+        status: "active",
         created_at: new Date()
       },
       { transaction }
@@ -39,6 +41,7 @@ const localRegister = async (
     await transaction.commit();
     next();
   } catch (err) {
+    console.log(err)
     await transaction.rollback();
     next(err)
   }

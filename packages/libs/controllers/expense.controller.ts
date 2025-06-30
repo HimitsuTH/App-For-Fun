@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { Expenses, Category } from "../models";
+import { Expenses, Categories } from "../models";
 import logger from "../helpers/winston.helper";
 import sequelize from "../helpers/sequelize.helper";
 
@@ -13,8 +13,8 @@ const getExpense = async (req: Request, res: Response, next: NextFunction) => {
             },
             include: [
                 {
-                    model: Category,
-                    as: 'category',
+                    model: Categories,
+                    as: 'categories',
                     attributes: [
                         'id',
                         'name',

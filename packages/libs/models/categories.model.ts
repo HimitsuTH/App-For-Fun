@@ -1,14 +1,14 @@
 import sequelize from 'libs/helpers/sequelize.helper'
 import { DataTypes, Model } from 'sequelize'
 
-export class Category extends Model {
+export class Categories extends Model {
   id!: number
   name!:string
   description!: string
   created_at!: Date
 }
 
-Category.init(
+Categories.init(
   {
     name: {
       type: DataTypes.STRING(50),
@@ -23,7 +23,7 @@ Category.init(
   },
   {
     sequelize,
-    tableName: 'category',
+    tableName: 'categories',
     timestamps: false,
   },
 )

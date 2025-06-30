@@ -52,7 +52,7 @@ module.exports = {
 
   async down (queryInterface, Sequelize) {
     await queryInterface.bulkDelete(
-      'category',
+      'roles',
       {
         id: [1, 2],
       },

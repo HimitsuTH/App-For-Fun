@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express'
 import redisHelper from './redis.helper'
 import { Users, Roles } from '../models'
 import { Op } from "sequelize";
+import logger from './winston.helper';
 
 const checkLoginSession = async (req: Request, res: Response, next:NextFunction) => {
     try { 
@@ -19,6 +20,7 @@ const checkActiveSession = async (req : Request , res: Response, next: NextFunct
         const user: any = req.user
         const activeSessionID = await redisHelper.get(`user:${user.email}`)
         if (!activeSessionID || currentSessionID !== activeSessionID) throw new Error('422 The request was reject...')
+        next()
     } catch (err) {
         next(err)
     }
@@ -42,14 +44,11 @@ const setActiveSession = async (req: Request, res: Response, next: NextFunction)
 
 const checkRole = async (req: Request, res: Response, next: NextFunction) => {
     try {
+        logger.info('===================== CHECK ROLE =====================')
         const user: any = req.user
         if (!user) throw new Error('422 The request was rejected...')
 
-        const role = await Roles.findOne({
-            where: {
-                id: user.role_id
-            }
-        })
+        const role = user.roles.name
         if (!role) throw new Error('404 user not found...')
 
         if (role.name !== "admin") {

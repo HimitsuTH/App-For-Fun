@@ -61,13 +61,12 @@ passport.use(
       }
 
       _user = user.toJSON();
-   console.log('decryption(user.email)------',decryption(user.email))
+
       const userInfo = {
         ..._user,
         email: decryption(_user.email),
         password: undefined,
       };
-      console.log('userInfo-----',userInfo)
 
       await user.update({
           invalid_password_time: null
@@ -101,26 +100,23 @@ passport.deserializeUser(async (user: any, done) => {
         id: user.id,
       },
       include: [
-            {
-                model: Roles,
-                as: 'roles',
-                attributes: [
-                    'name'
-                ]
-            }
-        ]
+          {
+            model: Roles,
+            as: 'roles',
+            attributes: [
+                'name'
+            ]
+          }
+      ]
     });
     if (!checkUser) throw new Error("401 auth failed..");
     _user = checkUser.toJSON();
-
-    console.log('deserializeUser ------decryption(user.email)------',decryption(user.email))
 
     const userInfo = {
       ..._user,
       email: decryption(_user.email),
       passport: undefined,
     };
-    console.log('userInfo-----',userInfo)
 
     done(null, { ...userInfo, redireact_path: "/" });
   } catch (err) {

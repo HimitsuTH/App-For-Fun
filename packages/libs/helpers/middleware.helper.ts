@@ -19,7 +19,7 @@ const checkActiveSession = async (req : Request , res: Response, next: NextFunct
     try {
         const currentSessionID = req.sessionID
         const user: any = req.user
-        const activeSessionID = await redisHelper.get(`user:${user.email}`)
+        const activeSessionID = await redisHelper.get(`userM:${user.username}`)
         if (!activeSessionID || currentSessionID !== activeSessionID) throw new Error('422 The request was reject...')
         next()
     } catch (err) {
@@ -37,7 +37,7 @@ const setActiveSession = async (req: Request, res: Response, next: NextFunction)
             },
        }) 
        if (!user) throw new Error('404 user not found...')
-       await redisHelper.set(`user:${user.email}`, req.sessionID)
+       await redisHelper.set(`userM:${user.username}`, req.sessionID)
        next()
     } catch (err) {
         next(err)

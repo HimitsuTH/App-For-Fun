@@ -5,7 +5,7 @@ import bcrypt from "bcrypt";
 
 import passportLocal from "passport-local";
 import { Roles, Users } from "libs/models";
-import { encryption } from "libs/helpers/crypto.helper";
+import { decryption, encryption } from "libs/helpers/crypto.helper";
 
 const userAttributes = [
   "id",
@@ -25,8 +25,6 @@ passport.use(
     done
   ) {
     try {
-      console.log(encryption(username))
-      console.log('----------------------------------------')
       const _username = encryption(username)
       let _user: any;
       const user = await Users.findOne({
@@ -34,24 +32,18 @@ passport.use(
           [Op.or]: [{ username: _username }, { email: _username }],
         },
         include: [
-            {
-                model: Roles,
-                as: 'roles',
-                attributes: [
-                    'name'
-                ]
-            }
+          {
+            model: Roles,
+            as: 'roles',
+            attributes: [
+                'name'
+            ]
+          }
         ]
       });
-      if (!user) {
-         throw new Error("Auth failed...");
-      } 
+      if (!user) throw new Error("Auth failed...");
       
-      if (user.status === 'inactive') {
-        throw new Error("---------------Please Contact ADMIN For UNLOCK This User---------------");
-      }
-
-    
+      if (user.status === 'inactive') throw new Error("---------------Please Contact ADMIN For UNLOCK This User---------------");
 
       if (user.invalid_password_time > 5) {
         await user.update({
@@ -67,11 +59,15 @@ passport.use(
         })
         throw new Error("Password weng worng!");
       }
+
       _user = user.toJSON();
+   console.log('decryption(user.email)------',decryption(user.email))
       const userInfo = {
         ..._user,
+        email: decryption(_user.email),
         password: undefined,
       };
+      console.log('userInfo-----',userInfo)
 
       await user.update({
           invalid_password_time: null
@@ -81,7 +77,6 @@ passport.use(
     } catch (err) {
       console.log(err)
       logger.error("login failed...");
-      logger.error(err);
       done(err);
     }
   })
@@ -118,10 +113,14 @@ passport.deserializeUser(async (user: any, done) => {
     if (!checkUser) throw new Error("401 auth failed..");
     _user = checkUser.toJSON();
 
+    console.log('deserializeUser ------decryption(user.email)------',decryption(user.email))
+
     const userInfo = {
       ..._user,
+      email: decryption(_user.email),
       passport: undefined,
     };
+    console.log('userInfo-----',userInfo)
 
     done(null, { ...userInfo, redireact_path: "/" });
   } catch (err) {

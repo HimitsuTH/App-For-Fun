@@ -11,11 +11,11 @@ export const encryption = (text: string) => {
 } 
 
 export const decryption = (text: string) => {
-    try {
-        const cipher = crypto.createCipheriv('aes-256-cbc', process.env.ENCRYPTION_KEY, iv)
-        const decrypted = cipher.update(text, 'hex', 'utf8') + cipher.final('utf8')
-        return decrypted
-    } catch {
-        return ""
-    }
+  try {
+    const cipher = crypto.createDecipheriv('aes-256-cbc', process.env.ENCRYPTION_KEY, iv)
+    const decrypted = cipher.update(text, 'hex', 'utf8') + cipher.final('utf8')
+    return decrypted
+  } catch {
+    return ''
+  }
 }

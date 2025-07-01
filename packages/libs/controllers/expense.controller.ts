@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { Expenses, Categories } from "../models";
 import logger from "../helpers/winston.helper";
 import sequelize from "../helpers/sequelize.helper";
+import { validateExpense } from "../utills/validate";
 
 const getExpense = async (req: Request, res: Response, next: NextFunction) => {
     try { 
@@ -23,8 +24,6 @@ const getExpense = async (req: Request, res: Response, next: NextFunction) => {
                 }
             ]
         })
-        console.log('---------------------------------------')
-        console.log(data)
 
         res.locals.expenses = data
         next()
@@ -40,7 +39,19 @@ const addExpense = async (req: Request, res: Response, next: NextFunction) => {
         logger.info('------ADD EXPENSE-----')
         const user: any = req.user
         if (!user) throw new Error('422 The request was rejected.')
-        const { name, amount, description, category_id, date } = req.body
+        const { name, amount, description, category_id, date, type } = req.body
+
+        const checkCategorise = Categories.findOne({
+            where: {
+                id: category_id
+            }
+        })
+        
+        if (!checkCategorise) throw new Error('404 Categorise not found.')
+
+        const validate = validateExpense(req.body)
+
+        if (validate.status == 'error') throw new Error(`400 ${validate.message}`)
 
         await Expenses.create({
             name,
@@ -49,6 +60,7 @@ const addExpense = async (req: Request, res: Response, next: NextFunction) => {
             category_id,
             user_id: user.id,
             date,
+            type,
             created_at: new Date()
         }, { transaction })
 

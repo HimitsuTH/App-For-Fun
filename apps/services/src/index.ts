@@ -10,6 +10,8 @@ const session = require("express-session");
 const RedisStore = require("connect-redis")(session);
 import redisHelper from "libs/helpers/redis.helper";
 import passport from "passport";
+import logger from 'libs/helpers/winston.helper';
+import { SERVER_PORT } from 'libs/config/config';
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -31,5 +33,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(router);
+
+app.listen(SERVER_PORT, () => {
+  logger.info(`Server running on port ${SERVER_PORT}`)
+});
 
 export default app;

@@ -2,7 +2,9 @@
   "name": "services",
   "version": "1.0.0",
   "scripts": {
-    "dev": "nodemon server.ts",
+    "dev": "nodemon ./src/index.ts",
+    "start": "node ./dist/index.js",
+    "build": "etsc --config=../../packages/libs/scripts/esbuild.config.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -19,6 +21,7 @@
     "express": "^5.1.0",
     "express-session": "^1.18.1",
     "ioredis": "^5.6.1",
+    "libs": "*",
     "nodemon": "^3.1.10",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
@@ -28,11 +31,21 @@
   "keywords": [],
   "description": "",
   "devDependencies": {
-    "@repo/typescript-config": "*",
     "@types/bcrypt": "^5.0.2",
     "@types/node": "^22.15.29",
     "@types/passport-local": "^1.0.38",
+    "dotenv": "^16.5.0",
+    "esbuild": "^0.25.6",
+    "esbuild-node-tsc": "^2.0.5",
+    "express": "^5.1.0",
+    "express-session": "^1.18.1",
+    "passport": "^0.7.0",
+    "passport-local": "^1.0.0",
+    "sequelize": "^6.22.1",
+    "sequelize-cli": "^6.4.1",
     "ts-node": "^10.9.2",
+    "tsconfig": "*",
+    "tsx": "^4.20.3",
     "typescript": "^5.8.3"
   }
 }

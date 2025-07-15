@@ -1,0 +1,7 @@
+{
+  "watch": ["src", "../../packages/libs"],
+  "ext": "ts,json,js",
+  "ignore": ["logs/*"],
+  "exec": "tsx ./src/index.ts",
+  "legacyWatch": true
+}

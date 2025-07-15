@@ -1,0 +1,46 @@
+version: '3.9'
+
+services:
+  web:
+    build: 
+      context: .
+      dockerfile: apps/web/Dockerfile
+    ports:
+      - "3000:3000" # Map host port 3000 to container port 3000
+    depends_on:
+      - server # Ensure server starts before web
+  server: 
+    build:
+      context: .
+      dockerfile: apps/services/Dockerfile
+    ports:
+      - "8000:8000" # Map host port 4000 to container port 4000
+    # environment:
+    #   DATABASE_URL: "postgresql://user:password@db:5432/mydatabase" # Database connection string
+    depends_on:
+      - db # Ensure database starts before server
+  db:
+    container_name: db
+    image: mysql:8.1
+    # command: --default-authentication-plugin=mysql_native_password
+    # restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root # กำหนด user ของ root mysql
+      MYSQL_DATABASE: tutorial # กำหนด database เริ่มต้นของ mysql
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    volumes:
+        - mysql_data:/var/lib/mysql
+  redis:
+    image: redis:latest
+    container_name: redis-container
+    ports:
+      - "6379:6379"
+
+volumes:
+  mysql_data: # กำหนดชื่อ volume ที่ต้องการจะสร้าง
+    driver: local
+  
+    

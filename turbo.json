@@ -1,10 +1,9 @@
 {
-  "$schema": "https://turborepo.com/schema.json",
-  "ui": "stream",
+  "$schema": "https://turborepo.org/schema.json",
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [".next/**", "!.next/cache/**"]
+      "outputs": ["dist/**", ".next/**"]
     },
     "lint": {
       "outputs": []
@@ -14,6 +13,11 @@
     },
     "start": {
       "cache": true
+    },
+    "docker": {
+      "dependsOn": ["build"],
+      "outputs": ["dist/**", ".next/**"]
     }
-  }
+  },
+  "ui": "stream"
 }

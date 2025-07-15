@@ -5,4 +5,6 @@ const envLocal = path.resolve(process.cwd(), '..', '..', 'packages', 'libs', '.e
 dotenv.config({ path: envPath })
 dotenv.config({ path: envLocal })
 
+console.log('-------------------------ENV-----------------------')
+
 export default dotenv

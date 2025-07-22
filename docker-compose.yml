@@ -15,7 +15,15 @@ services:
       dockerfile: apps/services/Dockerfile
     ports:
       - "8000:8000" # Map host port 4000 to container port 4000
-    # environment:
+    environment:
+      REDIS_HOST: redis # กำหนด user ของ root mysql
+      REDIS_PORT: 6379 # กำหนด database เริ่มต้นของ mysql
+      DB: tutorial
+      DB_DIALECT: mysql
+      DB_HOST: db
+      DB_USERNAME: user
+      DB_PASSWORD: password
+      DB_PORT: 3306
     #   DATABASE_URL: "postgresql://user:password@db:5432/mydatabase" # Database connection string
     depends_on:
       - db # Ensure database starts before server
@@ -23,14 +31,16 @@ services:
     container_name: db
     image: mysql:8.1
     # command: --default-authentication-plugin=mysql_native_password
-    # restart: always
+    restart: always
+    expose:
+      - "3306"
+    ports:
+      - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root # กำหนด user ของ root mysql
       MYSQL_DATABASE: tutorial # กำหนด database เริ่มต้นของ mysql
       MYSQL_USER: user
       MYSQL_PASSWORD: password
-    ports:
-      - "3306:3306"
     volumes:
         - mysql_data:/var/lib/mysql
   redis:

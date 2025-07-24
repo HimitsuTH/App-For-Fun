@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import redisHelper from './redis.helper'
-import { Users, Roles } from '../models'
+import { User, Role } from '../models'
 import { Op } from "sequelize";
 import logger from './winston.helper';
 import { encryption } from './crypto.helper';
@@ -31,7 +31,7 @@ const setActiveSession = async (req: Request, res: Response, next: NextFunction)
     const { username } = req.body
     try { 
        const _username = encryption(username)
-       const user = await Users.findOne({
+       const user = await User.findOne({
             where: {
                 [Op.or]: [{ username: _username }, { email: _username }],
             },

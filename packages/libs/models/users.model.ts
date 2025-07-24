@@ -1,18 +1,19 @@
 import sequelize from 'libs/helpers/sequelize.helper'
 import { DataTypes, Model } from 'sequelize'
 
-export class Users extends Model {
-  id!: number
-  username!:string
-  password!: string
-  email!: string
-  role_id!: number
-  status!: "active" | "inactive"
-  invalid_password_time!: number
-  created_at!: Date
+export class User extends Model {
+  declare id: number; 
+  declare username:string
+  declare password: string
+  declare email: string
+  declare role_id: number
+  declare status: "active" | "inactive"
+  declare invalid_password_time: number
+  declare created_at: Date
+  declare updated_at: Date
 }
 
-Users.init(
+User.init(
   {
     username: {
       type: DataTypes.STRING(50),
@@ -39,10 +40,15 @@ Users.init(
     created_at: {
       type: DataTypes.DATE,
     },
+    updated_at: {
+      type: DataTypes.DATE,
+    },
   },
   {
     sequelize,
     tableName: 'users',
-    timestamps: false,
+    timestamps: true,
+    createdAt: false,
+    updatedAt: 'updated_at',
   },
 )

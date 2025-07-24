@@ -26,7 +26,8 @@ module.exports = {
       'users',
       'role_id',
       {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        after: 'email'
       },
     )
 

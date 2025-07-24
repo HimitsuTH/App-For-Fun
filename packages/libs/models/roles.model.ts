@@ -1,13 +1,13 @@
 import sequelize from 'libs/helpers/sequelize.helper'
 import { DataTypes, Model } from 'sequelize'
 
-export class Roles extends Model {
+export class Role extends Model {
   id!: number
   name!:string
   created_at!: Date
 }
 
-Roles.init(
+Role.init(
   {
     name: {
       type: DataTypes.STRING(50),

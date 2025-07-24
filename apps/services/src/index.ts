@@ -11,7 +11,7 @@ const RedisStore = require("connect-redis")(session);
 import redisHelper from "libs/helpers/redis.helper";
 import passport from "passport";
 import logger from 'libs/helpers/winston.helper';
-import { SERVER_PORT } from 'libs/config/config';
+import { SERVER_PORT, ENVIRONMENT } from 'libs/config/config';
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -33,6 +33,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(router);
+
+console.log(`------------------- ENVIRONMENT : ${ENVIRONMENT} -------------------`)
 
 app.listen(SERVER_PORT, () => {
   logger.info(`Server running on port ${SERVER_PORT}`)

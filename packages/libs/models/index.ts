@@ -1,8 +1,8 @@
-import { Roles } from './roles.model'
-import { Users } from './users.model'
+import { Role } from './roles.model'
+import { User } from './users.model'
 
 //============ Relational =====================
-Users.belongsTo(Roles, { foreignKey: 'role_id', as: 'roles' })
+User.belongsTo(Role, { foreignKey: 'role_id', as: 'roles' })
 // Roles.hasMany(Users, { foreignKey: 'role_id', sourceKey: 'id', as: 'users' });
 
 export * from './categories.model'

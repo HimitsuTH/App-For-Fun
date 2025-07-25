@@ -4,7 +4,7 @@ import { Op } from "sequelize";
 import bcrypt from "bcrypt";
 
 import passportLocal from "passport-local";
-import { Roles, Users } from "libs/models";
+import { Role, User } from "libs/models";
 import { decryption, encryption } from "libs/helpers/crypto.helper";
 
 const userAttributes = [
@@ -27,13 +27,13 @@ passport.use(
     try {
       const _username = encryption(username)
       let _user: any;
-      const user = await Users.findOne({
+      const user = await User.findOne({
         where: {
           [Op.or]: [{ username: _username }, { email: _username }],
         },
         include: [
           {
-            model: Roles,
+            model: Role,
             as: 'roles',
             attributes: [
                 'name'
@@ -94,14 +94,14 @@ passport.deserializeUser(async (user: any, done) => {
     if (!user) throw new Error("401 auth failed..");
     let _user: any;
 
-    const checkUser = await Users.findOne({
+    const checkUser = await User.findOne({
       attributes: userAttributes,
       where: {
         id: user.id,
       },
       include: [
           {
-            model: Roles,
+            model: Role,
             as: 'roles',
             attributes: [
                 'name'

@@ -1,11 +1,15 @@
 {
   "extends": "tsconfig/nextjs.json",
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "next-env.d.ts",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ],
   "compilerOptions": {
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
     "target": "ES2017",
     "lib": [
       "dom",
@@ -14,15 +18,5 @@
     ],
     "incremental": true,
     "resolveJsonModule": true
-  },
-  "include": [
-    "**/src/*.ts",
-    "**/*.tsx",
-    "next-env.d.ts",
-    "next.config.js",
-    ".next/types/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  }
 }

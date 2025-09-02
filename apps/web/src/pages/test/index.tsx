@@ -1,11 +1,11 @@
-import  withAuthenticated from "../../hocs/hoc";
+import withAuthenticated from "../../hocs/hoc";
 
- const Test = () => {
+const TestPage = () => {
   return (
     <div>
-        <h1>LOG TEST ROUTER</h1>
+      <h1>LOG TEST ROUTER</h1>
     </div>
   );
-}
+};
 
-export default withAuthenticated(Test)
+export default withAuthenticated(TestPage);

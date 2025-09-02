@@ -9,6 +9,7 @@ router.get("/ping", (req, res) => {
 router.get('/',
     async (req, res, next) => {
         const user = req.user
+        console.log(req.user)
         res.locals.body = {
             res_code: '200',
             res_desc: 'success',

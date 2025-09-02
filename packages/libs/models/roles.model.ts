@@ -2,9 +2,9 @@ import sequelize from 'libs/helpers/sequelize.helper'
 import { DataTypes, Model } from 'sequelize'
 
 export class Role extends Model {
-  id!: number
-  name!:string
-  created_at!: Date
+  declare id: number
+  declare name:string
+  declare created_at: Date
 }
 
 Role.init(

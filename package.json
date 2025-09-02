@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "build": "turbo run build",
+    "clean": "rm -rf ./.turbo && rm -rf ./node_modules && rm -rf ./out && rm -rf ./apps/web/.next && rm -rf ./apps/web/.turbo && rm -rf ./apps/web/node_modules && rm -rf ./apps/services/.turbo && rm -rf ./apps/services/dist && rm -rf ./apps/services/node_modules",
     "start": "turbo run start",
     "mg:up": "npx sequelize-cli db:migrate",
     "mg:down": "npx sequelize-cli db:migrate:undo",

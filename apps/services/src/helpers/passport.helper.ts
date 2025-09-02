@@ -4,7 +4,7 @@ import { Op } from "sequelize";
 import bcrypt from "bcrypt";
 
 import passportLocal from "passport-local";
-import { Roles, Users } from "libs/models";
+import { Role, User } from "libs/models";
 import { decryption, encryption } from "libs/helpers/crypto.helper";
 
 const userAttributes = [
@@ -27,13 +27,13 @@ passport.use(
     try {
       const _username = encryption(username)
       let _user: any;
-      const user = await Users.findOne({
+      const user = await User.findOne({
         where: {
           [Op.or]: [{ username: _username }, { email: _username }],
         },
         include: [
           {
-            model: Roles,
+            model: Role,
             as: 'roles',
             attributes: [
                 'name'
@@ -71,6 +71,7 @@ passport.use(
       await user.update({
           invalid_password_time: null
       })
+      console.log('test----local ----->')
 
       done(null, { ...userInfo });
     } catch (err) {
@@ -83,25 +84,31 @@ passport.use(
 
 passport.serializeUser((user, done) => {
   try {
+    console.log('------serializeUser------>')
     done(null, user);
   } catch (err) {
     done(err);
   }
 });
 
-passport.deserializeUser(async (user: any, done) => {
-  try {
-    if (!user) throw new Error("401 auth failed..");
-    let _user: any;
+passport.deserializeUser(async (user: any, done) => { // Corrected: 'id' is the parameter
+  console.log('*** PASSPORT: deserializeUser called ***');
+  console.log('ID received for deserialization:-------->', user); // Log the ID being processed
 
-    const checkUser = await Users.findOne({
+  try {
+    if (!user) { // Check if the ID itself is valid
+      console.log('ERROR: deserializeUser received empty or invalid ID:', user);
+      return done(new Error("Invalid user ID for deserialization"));
+    }
+
+    const checkUser = await User.findOne({
       attributes: userAttributes,
       where: {
-        id: user.id,
+        id: user.id, // Corrected: Use 'id' directly
       },
       include: [
           {
-            model: Roles,
+            model: Role,
             as: 'roles',
             attributes: [
                 'name'
@@ -109,19 +116,66 @@ passport.deserializeUser(async (user: any, done) => {
           }
       ]
     });
-    if (!checkUser) throw new Error("401 auth failed..");
-    _user = checkUser.toJSON();
 
+    if (!checkUser) {
+      console.log('Deserialized user NOT found in DB for ID:', user);
+      return done(null, false); // Indicate user not found, Passport will set req.user to undefined
+    }
+
+    let _user = checkUser.toJSON();
+
+    // Decrypt email and prepare user info
     const userInfo = {
       ..._user,
       email: decryption(_user.email),
-      passport: undefined,
+      // Do NOT add 'passport: undefined' or 'redireact_path' here.
+      // req.user should be a clean user object.
     };
 
-    done(null, { ...userInfo, redireact_path: "/" });
+    console.log('Deserialized user found and prepared:', userInfo.username); // Log the found user
+    console.log('------deserializeUser finished------');
+    done(null, userInfo); // Pass the clean user object
   } catch (err) {
-    done(err);
+    console.error('ERROR in deserializeUser:', err); // Log the actual error
+    done(err); // Pass the error to Passport
   }
 });
+
+// passport.deserializeUser(async (user: any, done) => {
+//   try {
+//     if (!user) throw new Error("401 auth failed..");
+//     let _user: any;
+
+//     const checkUser = await User.findOne({
+//       attributes: userAttributes,
+//       where: {
+//         id: user.id,
+//       },
+//       include: [
+//           {
+//             model: Role,
+//             as: 'roles',
+//             attributes: [
+//                 'name'
+//             ]
+//           }
+//       ]
+//     });
+//     if (!checkUser) throw new Error("401 auth failed..");
+//     _user = checkUser.toJSON();
+
+//     console.log(_user)
+
+//     const userInfo = {
+//       ..._user,
+//       email: decryption(_user.email),
+//       passport: undefined,
+//     };
+//     console.log('------deserializeUser------>')
+//     done(null, { ...userInfo, redireact_path: "/" });
+//   } catch (err) {
+//     done(err);
+//   }
+// });
 
 export default passport;

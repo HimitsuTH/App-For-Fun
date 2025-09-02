@@ -1,6 +1,7 @@
 import Image, { type ImageProps } from "next/image";
-import { Button } from "@repo/ui/button";
+import { Button } from 'ui/components/button'
 import styles from "./page.module.css";
+import withAuthenticated from "../hocs/hoc";
 
 type Props = Omit<ImageProps, "src"> & {
   srcLight: string;
@@ -18,7 +19,7 @@ const ThemeImage = (props: Props) => {
   );
 };
 
-export default function Home() {
+ function Home() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
@@ -100,3 +101,5 @@ export default function Home() {
     </div>
   );
 }
+
+export default withAuthenticated(Home)

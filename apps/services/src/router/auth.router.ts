@@ -5,6 +5,8 @@ import middleware from "libs/helpers/middleware.helper";
 
 const router = express.Router();
 
+console.log('test0-----login--->')
+
 router.post("/login",
   middleware.checkLoginSession,
   passportHelper.authenticate("local", {
@@ -23,6 +25,7 @@ router.post("/login",
 
 router.post("/logout", async (req, res, next) => {
   const session: any = req.session;
+  console.log('logout----------->',req.session)
   const userId = session.passport.user.id;
   req.logOut((err) => {
     if (!err) {

@@ -13,6 +13,7 @@ const userAttributes = [
   "username",
   "password",
   "invalid_password_time",
+  "status"
 ];
 
 const LocalStrategy = passportLocal.Strategy;
@@ -62,7 +63,7 @@ passport.use(
 
       _user = user.toJSON();
 
-      const userInfo = {
+      const userInfo: User = {
         ..._user,
         email: decryption(_user.email),
         password: undefined,
@@ -91,12 +92,12 @@ passport.serializeUser((user, done) => {
   }
 });
 
-passport.deserializeUser(async (user: any, done) => { // Corrected: 'id' is the parameter
+passport.deserializeUser(async (user: any, done) => {
   console.log('*** PASSPORT: deserializeUser called ***');
-  console.log('ID received for deserialization:-------->', user); // Log the ID being processed
+  console.log('ID received for deserialization:-------->', user);
 
   try {
-    if (!user) { // Check if the ID itself is valid
+    if (!user) {
       console.log('ERROR: deserializeUser received empty or invalid ID:', user);
       return done(new Error("Invalid user ID for deserialization"));
     }
@@ -104,7 +105,7 @@ passport.deserializeUser(async (user: any, done) => { // Corrected: 'id' is the 
     const checkUser = await User.findOne({
       attributes: userAttributes,
       where: {
-        id: user.id, // Corrected: Use 'id' directly
+        id: user.id,
       },
       include: [
           {
@@ -124,15 +125,14 @@ passport.deserializeUser(async (user: any, done) => { // Corrected: 'id' is the 
 
     let _user = checkUser.toJSON();
 
-    // Decrypt email and prepare user info
     const userInfo = {
       ..._user,
       email: decryption(_user.email),
-      // Do NOT add 'passport: undefined' or 'redireact_path' here.
-      // req.user should be a clean user object.
+      username: decryption(_user.username),
+      password: undefined,
     };
 
-    console.log('Deserialized user found and prepared:', userInfo.username); // Log the found user
+    console.log('Deserialized user found and prepared:', userInfo.username)
     console.log('------deserializeUser finished------');
     done(null, userInfo); // Pass the clean user object
   } catch (err) {
@@ -141,41 +141,5 @@ passport.deserializeUser(async (user: any, done) => { // Corrected: 'id' is the 
   }
 });
 
-// passport.deserializeUser(async (user: any, done) => {
-//   try {
-//     if (!user) throw new Error("401 auth failed..");
-//     let _user: any;
-
-//     const checkUser = await User.findOne({
-//       attributes: userAttributes,
-//       where: {
-//         id: user.id,
-//       },
-//       include: [
-//           {
-//             model: Role,
-//             as: 'roles',
-//             attributes: [
-//                 'name'
-//             ]
-//           }
-//       ]
-//     });
-//     if (!checkUser) throw new Error("401 auth failed..");
-//     _user = checkUser.toJSON();
-
-//     console.log(_user)
-
-//     const userInfo = {
-//       ..._user,
-//       email: decryption(_user.email),
-//       passport: undefined,
-//     };
-//     console.log('------deserializeUser------>')
-//     done(null, { ...userInfo, redireact_path: "/" });
-//   } catch (err) {
-//     done(err);
-//   }
-// });
 
 export default passport;

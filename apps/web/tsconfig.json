@@ -5,7 +5,7 @@
     "**/*.tsx",
     "next-env.d.ts",
     ".next/types/**/*.ts"
-  ],
+, "src/store/index.ts.temp", "src/app/libs/store/hooks.ts", "../../packages/ui/store/providers/QueryProvider.tsx", "../../packages/ui/store/providers/StoreProvider.tsx"  ],
   "exclude": [
     "node_modules"
   ],

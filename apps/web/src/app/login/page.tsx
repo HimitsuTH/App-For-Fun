@@ -1,10 +1,30 @@
+"use client"
 import axios from "axios";
-import Router from "next/router";
-import { useState } from "react";
+import { useEffect } from 'react';
+import { setUser } from "ui/store/slices/user.slice";
+import { useRouter } from 'next/navigation'
+import { useAppSelector, useAppDispatch } from "ui/store/hooks";
 
 
  const Login = () => {
-  const [user, setUser] = useState(null)
+  const { data } = useAppSelector(state => state.user)
+  console.log('user---> web test ---->', data)
+  const user = data
+  const dispatch = useAppDispatch()
+  const router = useRouter()
+
+  console.log('-------LOGIN router------',router)
+
+  useEffect(() => {
+    axios.get('/api/profile')
+      .then((res) => {
+        router.push('/')
+      })
+      .catch((err:any) => {
+        console.log(err)
+      })
+  }, [user, router]); 
+
 
 
   const onSubmit = async (e:any) => {
@@ -19,12 +39,13 @@ import { useState } from "react";
         console.log('test--------------->', data)
         return data
       })
-      setUser(test)
+      dispatch(setUser(test))
 
 
     } catch(err) {
-      console.log(err)
-      setUser(null)
+      console.log('------------------=')
+      console.log(err);
+      console.log('------------------=')
     }
   }
 
@@ -33,7 +54,6 @@ import { useState } from "react";
       await axios.post('http://localhost:8000/auth/logout',{},{ 
         withCredentials: true, 
       });
-      setUser(null)
       console.log('Logout successful');
     } catch(err){
       console.error('Logout error:', err);
@@ -65,7 +85,10 @@ import { useState } from "react";
                 Login
             </button>
         </form>
-        {user && <button
+
+
+        {/* FOR REMOVE USER WHEN CAN NOT LOGIN */}
+        {/* <button
             onClick={onLogout}
             style={{
                 padding: '10px 20px',
@@ -82,9 +105,9 @@ import { useState } from "react";
             onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#f44336'}
         >
             Logout
-        </button>}
+        </button> */}
 
-        <button onClick={()=> Router.replace('/test')}>
+        <button onClick={()=> router.push('/test')}>
           Navigate to Test
         </button>
     </div>

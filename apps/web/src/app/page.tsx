@@ -1,7 +1,10 @@
+'use client';
 import Image, { type ImageProps } from "next/image";
 import { Button } from 'ui/components/button'
 import styles from "./page.module.css";
-import withAuthenticated from "../hocs/hoc";
+import withAuthenticated from "../hocs/with-auth-hoc";
+// import { useAppDispatch } from "ui/store/hooks";
+import { useRouter } from 'next/navigation'
 
 type Props = Omit<ImageProps, "src"> & {
   srcLight: string;
@@ -20,8 +23,12 @@ const ThemeImage = (props: Props) => {
 };
 
  function Home() {
+  const router = useRouter()
   return (
     <div className={styles.page}>
+          <button onClick={()=> router.push('/login')}>
+          Navigate to Test
+        </button>
       <main className={styles.main}>
         <ThemeImage
           className={styles.logo}
@@ -98,6 +105,7 @@ const ThemeImage = (props: Props) => {
           Go to turborepo.com →
         </a>
       </footer>
+  
     </div>
   );
 }

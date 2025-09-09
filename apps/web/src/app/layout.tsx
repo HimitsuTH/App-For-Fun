@@ -2,6 +2,11 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 
+import StoreProvider from "ui/store/providers/StoreProvider";
+// import { Provider } from 'react-redux';
+// import { makeStore } from 'ui/store'
+import QueryProvider from "ui/store/providers/QueryProvider"
+
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -23,9 +28,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {children}
-      </body>
+        <body className={`${geistSans.variable} ${geistMono.variable}`}>
+          <StoreProvider>
+            <QueryProvider>{children}</QueryProvider>
+          </StoreProvider>
+        </body>
     </html>
   );
 }

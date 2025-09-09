@@ -1,23 +1,29 @@
-import { getProfile } from 'ui/utils/requests/profile'
+// import { getProfile } from 'ui/utils/requests/profile'
+import { useQueryProfile } from 'ui/utils/requests/profile'
+import { useAppDispatch , useAppSelector } from 'ui/store/hooks'
+import { Container } from 'ui/components/Container'
+// import { State } from 'ui/store'
 
 const withAuthenticated = (
   Component: any,
 ) => {
   const ComponentWithAuthenticated = (props: any) => {
     try {
+      const { data: user } = useAppSelector((state) => state.user)
+      const dispatch = useAppDispatch()
       console.log('=----------------------------------------->')
-      const user = getProfile() // Ensure this is a synchronous function or handle it with React hooks (e.g., useState, useEffect)
-      console.log('=----------------------------------------->')
+      useQueryProfile(['profile', user], user, dispatch)
+      // const user= getProfile() 
+      console.log('=----------------------------------------->',user)
 
       if (!user) {
         return <div>Loading. . .</div>
       }
 
       return (
-        <div>
-          <div>TEST HOCS...</div>
+        <Container>
           <Component {...props} />
-        </div>
+        </Container>
       )
     } catch (err) {
       console.error(err)

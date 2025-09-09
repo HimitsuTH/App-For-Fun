@@ -7,7 +7,6 @@ const redisHelper = new Redis({
     port: REDIS_PORT,
 })
 
-
 redisHelper.on('error', (err: any) => {
     logger.error('Redis Connect Failed...', err)
     throw new Error('Rediis Connect Failed...')

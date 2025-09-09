@@ -13,7 +13,7 @@ const userAttributes = [
   "username",
   "password",
   "invalid_password_time",
-  "status"
+  "status",
 ];
 
 const LocalStrategy = passportLocal.Strategy;
@@ -26,7 +26,7 @@ passport.use(
     done
   ) {
     try {
-      const _username = encryption(username)
+      const _username = encryption(username);
       let _user: any;
       const user = await User.findOne({
         where: {
@@ -35,29 +35,32 @@ passport.use(
         include: [
           {
             model: Role,
-            as: 'roles',
-            attributes: [
-                'name'
-            ]
-          }
-        ]
+            as: "roles",
+            attributes: ["name"],
+          },
+        ],
       });
       if (!user) throw new Error("Auth failed...");
-      
-      if (user.status === 'inactive') throw new Error("---------------Please Contact ADMIN For UNLOCK This User---------------");
+
+      if (user.status === "inactive")
+        throw new Error(
+          "---------------Please Contact ADMIN For UNLOCK This User---------------"
+        );
 
       if (user.invalid_password_time > 5) {
         await user.update({
-          status: "inactive"
-        })
-        throw new Error("---------------Limit time to login this user more than 5 pls contact ADMIN---------------");
+          status: "inactive",
+        });
+        throw new Error(
+          "---------------Limit time to login this user more than 5 pls contact ADMIN---------------"
+        );
       }
 
       const matchPassword = await bcrypt.compare(password, user.password);
       if (!matchPassword) {
         user.update({
-          invalid_password_time: user.invalid_password_time + 1
-        })
+          invalid_password_time: user.invalid_password_time + 1,
+        });
         throw new Error("Password weng worng!");
       }
 
@@ -70,13 +73,13 @@ passport.use(
       };
 
       await user.update({
-          invalid_password_time: null
-      })
-      console.log('test----local ----->')
+        invalid_password_time: null,
+      });
+      console.log("test----local ----->");
 
       done(null, { ...userInfo });
     } catch (err) {
-      console.log(err)
+      console.log(err);
       logger.error("login failed...");
       done(err);
     }
@@ -85,7 +88,7 @@ passport.use(
 
 passport.serializeUser((user, done) => {
   try {
-    console.log('------serializeUser------>')
+    console.log("------serializeUser------>");
     done(null, user);
   } catch (err) {
     done(err);
@@ -93,12 +96,12 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser(async (user: any, done) => {
-  console.log('*** PASSPORT: deserializeUser called ***');
-  console.log('ID received for deserialization:-------->', user);
+  console.log("*** PASSPORT: deserializeUser called ***");
+  console.log("ID received for deserialization:-------->", user);
 
   try {
     if (!user) {
-      console.log('ERROR: deserializeUser received empty or invalid ID:', user);
+      console.log("ERROR: deserializeUser received empty or invalid ID:", user);
       return done(new Error("Invalid user ID for deserialization"));
     }
 
@@ -108,18 +111,16 @@ passport.deserializeUser(async (user: any, done) => {
         id: user.id,
       },
       include: [
-          {
-            model: Role,
-            as: 'roles',
-            attributes: [
-                'name'
-            ]
-          }
-      ]
+        {
+          model: Role,
+          as: "roles",
+          attributes: ["name"],
+        },
+      ],
     });
 
     if (!checkUser) {
-      console.log('Deserialized user NOT found in DB for ID:', user);
+      console.log("Deserialized user NOT found in DB for ID:", user);
       return done(null, false); // Indicate user not found, Passport will set req.user to undefined
     }
 
@@ -132,14 +133,13 @@ passport.deserializeUser(async (user: any, done) => {
       password: undefined,
     };
 
-    console.log('Deserialized user found and prepared:', userInfo.username)
-    console.log('------deserializeUser finished------');
+    console.log("Deserialized user found and prepared:", userInfo.username);
+    console.log("------deserializeUser finished------");
     done(null, userInfo); // Pass the clean user object
   } catch (err) {
-    console.error('ERROR in deserializeUser:', err); // Log the actual error
+    console.error("ERROR in deserializeUser:", err); // Log the actual error
     done(err); // Pass the error to Passport
   }
 });
-
 
 export default passport;

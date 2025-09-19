@@ -3,11 +3,16 @@ import { Expenses, Categories } from "../models";
 import logger from "../helpers/winston.helper";
 import sequelize from "../helpers/sequelize.helper";
 import { validateExpense } from "../utills/validate";
+import { ResponseError } from "../types/auth.type";
 
 const getExpense = async (req: Request, res: Response, next: NextFunction) => {
     try { 
         const user: any = req.user
-        if (!user) throw new Error('422 The request was rejected.')
+        if (!user) {
+            const error:ResponseError = new Error('422 The request was rejected.')
+            error.statusCode = 422;
+            throw error
+        }
         const data = await Expenses.findAll({
             where: {
                 user_id: user.id
@@ -38,7 +43,11 @@ const addExpense = async (req: Request, res: Response, next: NextFunction) => {
     try {
         logger.info('------ADD EXPENSE-----')
         const user: any = req.user
-        if (!user) throw new Error('422 The request was rejected.')
+        if (!user) {
+            const error:ResponseError = new Error('422 The request was rejected.')
+            error.statusCode = 422;
+            throw error
+        }
         const { name, amount, description, category_id, date, type } = req.body
 
         const checkCategorise = Categories.findOne({
@@ -47,7 +56,11 @@ const addExpense = async (req: Request, res: Response, next: NextFunction) => {
             }
         })
         
-        if (!checkCategorise) throw new Error('404 Categorise not found.')
+        if (!checkCategorise) {
+            const error:ResponseError = new Error('404 Categorise not found.')
+            error.statusCode = 404;
+            throw error
+        } 
 
         const validate = validateExpense(req.body)
 

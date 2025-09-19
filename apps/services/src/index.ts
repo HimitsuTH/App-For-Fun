@@ -14,6 +14,7 @@ import redisHelper from "libs/helpers/redis.helper";
 import passport from "passport";
 import logger from "libs/helpers/winston.helper";
 import { SERVER_PORT, ENVIRONMENT } from "libs/config/config";
+import { errorHandler } from 'libs/controllers/log.controller'
 
 app.use(cookieParser());
 app.use(bodyParser.json());
@@ -49,6 +50,8 @@ app.use(router);
 console.log(
   `------------------- ENVIRONMENT : ${ENVIRONMENT} -------------------`
 );
+
+app.use(errorHandler)
 
 app.listen(SERVER_PORT, () => {
   logger.info(`Server running on port ${SERVER_PORT}`);

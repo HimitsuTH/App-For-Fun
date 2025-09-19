@@ -2,11 +2,16 @@ import { NextFunction, Request, Response } from "express";
 import { Categories } from "../models";
 import logger from "../helpers/winston.helper";
 import sequelize from "../helpers/sequelize.helper";
+import { ResponseError } from "../types/auth.type";
 
 const getCategory = async (req: Request, res: Response, next: NextFunction) => {
     try { 
         const data = await Categories.findAll()
-        if (!data) throw new Error('404 Data not founded.')
+        if (!data) {
+            const error:ResponseError = new Error('404 Data not founded.')
+            error.statusCode = 404;
+            throw error
+        }
 
         res.locals.categories = data
         next()
@@ -22,7 +27,11 @@ const addCategories = async (req: Request, res: Response, next: NextFunction) =>
     try {
         logger.info('------ADD Categories-----')
         const user: any = req.user
-        if (!user) throw new Error('422 The request was rejected.')
+        if (!user) {
+            const error:ResponseError = new Error('422 The request was rejected.')
+            error.statusCode = 422;
+            throw error
+        } 
         const { name, description } = req.body
 
         const duplicate = await Categories.findOne({
@@ -31,7 +40,11 @@ const addCategories = async (req: Request, res: Response, next: NextFunction) =>
             }
         })
         console.log(duplicate)
-        if (duplicate) throw new Error('400 Duplicate Category.')
+        if (duplicate) {
+            const error:ResponseError = new Error('400 Duplicate Category.')
+            error.statusCode = 422;
+            throw error
+        }
 
         await Categories.create({
             name,

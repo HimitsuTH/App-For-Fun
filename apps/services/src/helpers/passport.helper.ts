@@ -6,6 +6,7 @@ import bcrypt from "bcrypt";
 import passportLocal from "passport-local";
 import { Role, User } from "libs/models";
 import { decryption, encryption } from "libs/helpers/crypto.helper";
+import { ResponseError } from "libs/types/auth.type";
 
 const userAttributes = [
   "id",
@@ -40,7 +41,11 @@ passport.use(
           },
         ],
       });
-      if (!user) throw new Error("Auth failed...");
+
+      if (!user) {
+        const error: ResponseError = new Error("Auth failed...");
+        throw error
+      }
 
       if (user.status === "inactive")
         throw new Error(
@@ -61,7 +66,9 @@ passport.use(
         user.update({
           invalid_password_time: user.invalid_password_time + 1,
         });
-        throw new Error("Password weng worng!");
+        const error: ResponseError = new Error("Password weng worng!");
+        error.statusCode = 401;
+        throw error
       }
 
       _user = user.toJSON();

@@ -1,37 +1,48 @@
-// import { getProfile } from 'ui/utils/requests/profile'
+'use client'
 import { useQueryProfile } from 'ui/utils/requests/profile'
+import { useEffect } from 'react'
 import { useAppDispatch , useAppSelector } from 'ui/store/hooks'
 import { Container } from 'ui/components/Container'
-// import { State } from 'ui/store'
+import LoadingPage from 'ui/common/LoadingPage'
+
+import { useRouter } from 'next/navigation'
+
+
 
 const withAuthenticated = (
   Component: any,
 ) => {
+  
   const ComponentWithAuthenticated = (props: any) => {
-    try {
       const { data: user } = useAppSelector((state) => state.user)
       const dispatch = useAppDispatch()
-      console.log('=----------------------------------------->')
-      useQueryProfile(['profile', user], user, dispatch)
-      // const user= getProfile() 
-      console.log('=----------------------------------------->',user)
+      const router = useRouter()
+      console.log('---user-------ComponentWithAuthenticated-----with-->',user)
+      console.log('=-------------------1---------------------->')
+      const { isError } = useQueryProfile(['profile', user], user, dispatch)
+
+      console.log('isError--->',isError)
+
+      useEffect(() => {
+        if (isError) {
+          router.replace('/login');
+        }
+      }, [isError, router]);
 
       if (!user) {
-        return <div>Loading. . .</div>
+        return <LoadingPage/>
       }
+
+
+      console.log('=-------------------2---------------------->')
 
       return (
         <Container>
           <Component {...props} />
         </Container>
       )
-    } catch (err) {
-      console.error(err)
-      return null // Return null or an error component on failure
-    }
   }
 
-  // Correct: The withAuthenticated function must return the ComponentWithAuthenticated
   return ComponentWithAuthenticated
 }
 

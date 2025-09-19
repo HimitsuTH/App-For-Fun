@@ -2,10 +2,10 @@
 
 import { ReactNode } from "react";
 import { useAppSelector, useAppDispatch } from "../store/hooks";
-import { cleanUser } from "../store/slices/user.slice";
 
-import axios from "axios";
 import { useRouter } from 'next/navigation'
+import { UserStatus } from "./status";
+import { logoutRequest } from 'ui/utils/requests/auth'
 
 import styled from 'styled-components'
 
@@ -15,12 +15,13 @@ export const Nav = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  background-color: #fff;
 
   z-index: 2;
   transition: all ease 0.2s;
 `
 
-export const NavContent = styled.div`
+export const NavList = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -42,10 +43,7 @@ export const Navbar = ({ children, className }: NavbarProps) => {
   console.log("user---> web test ---->", data);
   const onLogout = async () => {
     try {
-      await axios.post('http://localhost:8000/auth/logout',{},{ 
-        withCredentials: true, 
-      });
-      dispatch(cleanUser())
+      logoutRequest(dispatch)
       router.push('/login')
       console.log('Logout successful');
     } catch(err){
@@ -56,7 +54,8 @@ export const Navbar = ({ children, className }: NavbarProps) => {
   return (
     <Nav className={`${className}`}>
       <div/>
-      <NavContent>
+      <NavList>
+        <UserStatus status={user?.status}/>
         <p>{user?.email}</p>
         <button
           onClick={onLogout}
@@ -76,7 +75,7 @@ export const Navbar = ({ children, className }: NavbarProps) => {
         >
           Logout
         </button>
-      </NavContent>
+      </NavList>
     </Nav>
   );
 };

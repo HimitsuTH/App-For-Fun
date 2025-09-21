@@ -2,7 +2,6 @@ import axios from 'axios'
 import { useQuery } from '@tanstack/react-query'
 // import { clearUserAction, setUserAction } from '../../store/actions/user.action'
 import { cleanUser, setUser } from '../../store/slices/user.slice'
-// import Router from 'next/router'
 import Swal from 'sweetalert2'
 
 interface TypeUser {
@@ -10,31 +9,41 @@ interface TypeUser {
     email: string
 }
 
+
+
 const host = "http://localhost"
 const port = 8000
 
+    // const router = useRouter()
 export const getProfile = async (dispatch?:any) => {
     try {
-        const data:any = await axios.get(`${host}:${port}/profile`, {
+        console.log('><<><><><><><><><>START GET PROFILE<><><><<<>1<><><><>')
+
+        const data = await axios.get(`${host}:${port}/profile`, {
             withCredentials: true, 
         })
-        Swal.close()
-        console.log(',<><<><><><><><><><><><><><<<><>m')
-        console.log(data)
-        if (!data.data.user) {
+
+         console.log('><<><><><><><><><>START GET PROFILE<><><><<<2><><><><>')
+        // Swal.close()
+        console.log('DATA----------------->',data)
+        if (!data) {
             dispatch(cleanUser())
-            // Router.push('/login')
+            throw new Error('No user data received');
             // } else {
             //     if (data.user.redirect_path && Router.route !== data.user.redirect_path) {
             //     Router.push(data.user.redirect_path)
             // }
         }
 
-        dispatch(setUser(data))
-        return data
+        dispatch(setUser(data.data))
+        Swal.close()
+        return data.data
 
     } catch (error : any) {
         Swal.close()
+        console.log('----------------_ERORORORORO_------------------')
+        // router.replace('/login')
+        console.log('--------------1-----2-3-4-5-----------')
         dispatch(cleanUser())
         console.error('Profile fetch error:', error);
         

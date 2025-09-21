@@ -5,12 +5,18 @@ import { Op } from "sequelize";
 import logger from "./winston.helper";
 import { encryption } from "./crypto.helper";
 
-const userAuth =
-  () => async (req: Request, res: Response, next: NextFunction) => {
+import { ResponseError } from "../types/auth.type";
+
+
+const userAuth = () => async (req: Request, res: Response, next: NextFunction) => {
     try {
       logger.info("testt------auth------->");
       console.log("0-------auth---------------------------------_>", req.user);
-      if (!req.user) throw new Error("401 unauthenlize...");
+      if (!req.user) {
+
+        const error: ResponseError = new Error("401 unauthenlize...");
+        error.statusCode = 400;
+      }
       next();
     } catch (err) {
       next(err);
@@ -25,7 +31,11 @@ const checkLoginSession = async (
   try {
     const user = req.user;
     console.log("user------>", user);
-    if (user) throw new Error("422 The request was rejected...");
+    if (user) {
+        const error: ResponseError = new Error("422 The request was rejected.1..");
+        error.statusCode = 422;
+        throw error
+    }
     next();
   } catch (err) {
     next(err);
@@ -41,7 +51,12 @@ const checkActiveSession = async (
     const currentSessionID = req.sessionID;
     const user: any = req.user;
 
-    if (!user) throw new Error("404 user not found...");
+    if (!user) {
+        const error: ResponseError = new Error("404 user not found..2.");
+        error.message = "404 user not found..2."
+        error.statusCode = 404;
+        throw error
+    }
     console.log("---user.username----user.username----", user.username);
     const _username = encryption(user.username);
     const activeSessionID = await redisHelper.get(`userM:${_username}`);
@@ -51,8 +66,12 @@ const checkActiveSession = async (
       currentSessionID,
       activeSessionID
     );
-    if (!activeSessionID || currentSessionID !== activeSessionID)
-      throw new Error("422 The request was reject...");
+    if (!activeSessionID || currentSessionID !== activeSessionID){
+        const error: ResponseError = new Error("422 The request was rejected.2..");
+        error.statusCode = 422;
+        throw error
+    }
+      
     next();
   } catch (err) {
     next(err);
@@ -73,7 +92,11 @@ const setActiveSession = async (
       },
     });
 
-    if (!user) throw new Error("404 user not found...");
+    if (!user){
+        const error: ResponseError = new Error("404 user not found..1.");
+        error.statusCode = 404;
+        throw error
+    }
     console.log(`userM:${user.username}`, req.sessionID);
     logger.info("-------------------setActiveSession-------------------------");
     await redisHelper.set(`userM:${user.username}`, req.sessionID);
@@ -87,13 +110,23 @@ const checkRole = async (req: Request, res: Response, next: NextFunction) => {
   try {
     logger.info("===================== CHECK ROLE =====================");
     const user: any = req.user;
-    if (!user) throw new Error("422 The request was rejected...");
+    if (!user) {
+        const error: ResponseError = new Error("422 The request was rejected.3..");
+        error.statusCode = 422;
+        throw error
+    } 
 
     const role = user.roles.name;
-    if (!role) throw new Error("404 user not found...");
+    if (!role){
+        const error: ResponseError = new Error("404 user not found...");
+        error.statusCode = 404;
+        throw error
+    }
 
     if (role.name !== "admin") {
-      throw new Error("422 The request was rejected...");
+        const error: ResponseError = new Error("422 The request was rejected.4..");
+        error.statusCode = 422;
+        throw error
     }
     next();
   } catch (err) {

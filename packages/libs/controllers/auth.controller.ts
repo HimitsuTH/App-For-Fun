@@ -5,6 +5,7 @@ import { encryption } from "../helpers/crypto.helper";
 
 import bcrypt from "bcrypt";
 import Wallet from "../models/wallet.model";
+import { ResponseError } from "../types/auth.type";
 
 const localRegister = async (
   req: Request,
@@ -22,7 +23,9 @@ const localRegister = async (
       },
     });
     if (existsEmail) {
-      throw new Error("Email alredy exists.")
+        const error: ResponseError = new Error("Email alredy exists.");
+        error.statusCode = 400;
+        throw error
     }
 
     const sait = await bcrypt.genSalt(10);

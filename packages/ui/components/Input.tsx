@@ -1,6 +1,6 @@
 import { type JSX } from "react";
 import styled from "styled-components";
-
+import { Control } from "react-hook-form";
 
 const InputContainer = styled.div`
   display: flex;
@@ -10,31 +10,30 @@ const InputContainer = styled.div`
 
 `
 
-export function Input({
-  field,
-  register,
-  type,
-  errors
-}: {
+export function Input(props: {
   field: string;
   register: any,
   type?: string
   errors: any
+  control: Control<any,any>
 }): JSX.Element {
+  const { register , field } = props
 
+  console.log(props.errors)
 
 
   return (
     <InputContainer>
       <div style={{ marginBottom: '2rem',  width: '100%'}}>
-        <label>{field[0].toUpperCase() + field.slice(1)}</label>
+        <label>{field}</label>
         <input
           {...register(field)}
-          placeholder={field}
-          type={type}
+          control={props.control}
+          placeholder={field[0].toUpperCase() + field.slice(1)}
+          type={props.type}
           style={{ padding: '10px', marginTop: '0.5rem', display: 'block', width: '100%' }}
         />
-      {errors[field] && <p style={{ color: 'red', marginTop: '0.5rem' }}>{errors[field].message}</p>}
+      {props.errors[field] && <p style={{ color: 'red', marginTop: '0.5rem' }}>{props.errors[field].message}</p>}
       </div>
     </InputContainer>
   );

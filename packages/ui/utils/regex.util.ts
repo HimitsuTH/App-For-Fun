@@ -1,0 +1,1 @@
+export const isNumericDecimalMaxTwoDigits = /^([0-9]{1,})(\.\d{1,2})?$/

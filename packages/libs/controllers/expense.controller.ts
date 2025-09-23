@@ -50,9 +50,11 @@ const addExpense = async (req: Request, res: Response, next: NextFunction) => {
         }
         const { name, amount, description, category_id, date, type } = req.body
 
+        console.log('req----------Expense--->',req.body)
+
         const checkCategorise = Categories.findOne({
             where: {
-                id: category_id
+                name: category_id
             }
         })
         
@@ -69,7 +71,7 @@ const addExpense = async (req: Request, res: Response, next: NextFunction) => {
         await Expenses.create({
             name,
             amount,
-            description,
+            description: description ? description : "",
             category_id,
             user_id: user.id,
             date,

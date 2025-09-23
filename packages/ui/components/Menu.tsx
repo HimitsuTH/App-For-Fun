@@ -13,7 +13,7 @@ export const MenuComponent = styled.div`
   flex-direction: column;
   background-color: #fff;
   gap: 1rem;
-  width: 20%;
+  width: 200px;
   height: 100vh;
 
   z-index: 2;

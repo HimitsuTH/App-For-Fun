@@ -1,6 +1,6 @@
 'use client'
 import axios from 'axios'
-import Router from 'next/router'
+import { useRouter } from 'next/navigation'
 
 interface propsInterface {
   title?: string
@@ -10,6 +10,7 @@ interface propsInterface {
 }
 
 const ErrorComponent = (props: propsInterface) => {
+    const router = useRouter()
   return (
     <div style={{ width: '100vw', height: '100vh', backgroundColor: 'white', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', position: 'fixed', top: 0, left: 0, zIndex: 1000 }}>
       <div style={{ position: 'relative', height: '15em', width: '15em' }}>
@@ -33,19 +34,15 @@ const ErrorComponent = (props: propsInterface) => {
                   } else {
                     axios.get('/api/profile')
                       .then((res) => {
-                        if (res.data.access_menus_detail?.length && res.data.access_menus_detail[0]?.path) {
-                          Router.replace(res.data.access_menus_detail[0].path)
-                        } else {
-                          Router.replace('/')
-                        }
+                        router.back()
                       })
                       .catch(() => {
-                        Router.replace('/')
+                        router.back()
                       })
                   }
                 } catch (err) { }
               }}
-            />
+            >TEST</button>
           )
           : null
       }

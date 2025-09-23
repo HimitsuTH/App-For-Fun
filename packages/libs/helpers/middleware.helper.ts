@@ -116,6 +116,7 @@ const checkRole = async (req: Request, res: Response, next: NextFunction) => {
         throw error
     } 
 
+    console.log('user.roles--->',user.roles)
     const role = user.roles.name;
     if (!role){
         const error: ResponseError = new Error("404 user not found...");
@@ -123,7 +124,7 @@ const checkRole = async (req: Request, res: Response, next: NextFunction) => {
         throw error
     }
 
-    if (role.name !== "admin") {
+    if (role !== "admin") {
         const error: ResponseError = new Error("422 The request was rejected.4..");
         error.statusCode = 422;
         throw error

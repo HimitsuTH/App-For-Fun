@@ -2,14 +2,14 @@ import sequelize from 'libs/helpers/sequelize.helper'
 import { DataTypes, Model } from 'sequelize'
 
 export class Expenses extends Model {
-  id!: number
-  user_id!: number
-  category_id!: string
-  name!:string
-  amount!: string
-  description!: string
-  date!: Date
-  created_at!: Date
+  declare id: number
+  declare user_id: number
+  declare category_id: string
+  declare name:string
+  declare amount: string
+  declare description: string
+  declare date: Date
+  declare created_at: Date
 }
 
 Expenses.init(

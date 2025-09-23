@@ -2,7 +2,7 @@ import axios from "axios";
 import { setUser } from "ui/store/slices/user.slice";
 
 import Alert, { LoadingAlert } from 'ui/common/Alert'
-import Swal from "sweetalert2";
+// import Swal from "sweetalert2";
 
 export const loginRequest = async (data: any, dispatch: any, router: any) => {
     try {

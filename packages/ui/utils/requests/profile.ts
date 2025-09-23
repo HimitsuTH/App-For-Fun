@@ -4,13 +4,6 @@ import { useQuery } from '@tanstack/react-query'
 import { cleanUser, setUser } from '../../store/slices/user.slice'
 import Swal from 'sweetalert2'
 
-interface TypeUser {
-    username: string
-    email: string
-}
-
-
-
 const host = "http://localhost"
 const port = 8000
 

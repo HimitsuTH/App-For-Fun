@@ -27,6 +27,7 @@ const Login = () => {
         formState: { errors, isSubmitting },
         reset,
         setError,
+        control
     } = useForm<TSignInSchema>({
         resolver: zodResolver(signInSchema),
     });
@@ -56,8 +57,8 @@ const Login = () => {
         <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
             <h2 style={{ marginBottom: '20px' }}>Login/Logout Test</h2>
             <form onSubmit={handleSubmit(onSubmit)} style={{ marginBottom: '15px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <Input field="username" register={register} errors={errors}/>
-                <Input field="password" type="password" register={register} errors={errors}/>
+                <Input field="username" register={register} errors={errors} control={control}/>
+                <Input field="password" type="password" register={register} errors={errors} control={control}/>
 
                 <button
                     type="submit"

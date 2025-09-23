@@ -1,0 +1,14 @@
+{
+    "EXPENSE": {
+        "TYPE": [
+            {
+                "value": "INCOME",
+                "label": "INCOME"
+            },
+            {
+                "value": "EXPENSE",
+                "label": "EXPENSE"
+            }
+        ]
+    }
+}

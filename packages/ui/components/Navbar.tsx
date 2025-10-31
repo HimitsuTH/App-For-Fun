@@ -6,19 +6,36 @@ import { useAppSelector, useAppDispatch } from "../store/hooks";
 import { useRouter } from 'next/navigation'
 import { UserStatus } from "./status";
 import { logoutRequest } from 'ui/utils/requests/auth'
+import { LinkComponent } from "./Link";
 
 import styled from 'styled-components'
 
 export const Nav = styled.div`
   overflow: hidden;
   padding: 1rem;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  // display: flex;
+  // flex-direction: row;
+  // justify-content: space-between;
   background-color: #fff;
 
-  z-index: 2;
   transition: all ease 0.2s;
+
+  height: 4em;
+  background-color: white;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  box-sizing: border-box;
+  padding-left: calc(80px + 1em);
+  z-index: 101;
+
+  @media screen and (max-width: 960px) {
+    padding-left: calc(50px + 1em);
+  }
 `
 
 export const NavList = styled.div`
@@ -53,7 +70,9 @@ export const Navbar = ({ children, className }: NavbarProps) => {
   const user = data;
   return (
     <Nav className={`${className}`}>
-      <div/>
+      <div>
+        <LinkComponent title="Home"/>
+      </div>
       <NavList>
         <UserStatus status={user?.status}/>
         <p>{user?.email}</p>

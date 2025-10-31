@@ -23,7 +23,7 @@ export const createExpense = async (data: any, user:any, dispatch: any, router: 
         console.log('response--------------->', response);
         // dispatch(setUser(response.data));
         Swal.close()
-        router.replace('/');
+        router.replace('/expenses');
     } catch (err: any){
         console.log('error---login-request--->',err)
         Alert({
@@ -31,5 +31,19 @@ export const createExpense = async (data: any, user:any, dispatch: any, router: 
         })
         // Swal.close()
     }
-  
+}
+
+export const getExpenses = (): Promise<any> => {
+  return new Promise((resolve, reject) => {
+    axios.get('http://localhost:8000/expense', {
+        withCredentials: true,
+    })
+      .then((res) => {
+        console.log('get Expese--->',res)
+        resolve(res.data)
+      })
+      .catch((err) => {
+        reject(err)
+      })
+  })
 }

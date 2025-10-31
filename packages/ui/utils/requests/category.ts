@@ -15,9 +15,6 @@ export const getCategory= async (dispatch?:any) => {
             withCredentials: true, 
         })
 
-         console.log('><<><><><><><><><>START GET CATEGORY<><><><<<2><><><><>')
-        // Swal.close()
-        console.log('DATA----------------->',data)
         if (!data) {
             dispatch(cleanCategory())
             throw new Error('No Category data received');
@@ -30,7 +27,6 @@ export const getCategory= async (dispatch?:any) => {
     } catch (error : any) {
         Swal.close()
         console.log('----------------_ERORORORORO_------------------')
-        console.log('--------------1-----2-3-4-5-----------')
         dispatch(cleanCategory())
         console.error('Category fetch error:', error);
     }

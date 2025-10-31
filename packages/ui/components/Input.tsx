@@ -7,7 +7,6 @@ const InputContainer = styled.div`
   padding: 0.5rem;
   width: 300px;
   flex-decoration: column;
-
 `
 
 export function Input(props: {

@@ -4,7 +4,7 @@ import { Op } from "sequelize";
 import bcrypt from "bcrypt";
 
 import passportLocal from "passport-local";
-import { Role, User } from "libs/models";
+import { Role, User, Wallet } from "libs/models";
 import { decryption, encryption } from "libs/helpers/crypto.helper";
 import { ResponseError } from "libs/types/auth.type";
 
@@ -39,6 +39,11 @@ passport.use(
             as: "roles",
             attributes: ["name"],
           },
+          {
+            model: Wallet,
+            as: "wallet",
+            attributes: ['balance', 'currency']
+          }
         ],
       });
 
@@ -67,7 +72,7 @@ passport.use(
           invalid_password_time: user.invalid_password_time + 1,
         });
         const error: ResponseError = new Error("Password weng worng!");
-        error.statusCode = 401;
+        error.status = 401;
         throw error
       }
 
@@ -123,6 +128,11 @@ passport.deserializeUser(async (user: any, done) => {
           as: "roles",
           attributes: ["name"],
         },
+        {
+          model: Wallet,
+          as: "wallet",
+          attributes: ['balance', 'currency']
+        }
       ],
     });
 

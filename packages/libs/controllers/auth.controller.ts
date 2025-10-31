@@ -1,10 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import { User } from "../models";
+import { User, Wallet } from "../models";
 import sequelize from "../helpers/sequelize.helper";
 import { encryption } from "../helpers/crypto.helper";
 
 import bcrypt from "bcrypt";
-import Wallet from "../models/wallet.model";
 import { ResponseError } from "../types/auth.type";
 
 const localRegister = async (
@@ -24,7 +23,7 @@ const localRegister = async (
     });
     if (existsEmail) {
         const error: ResponseError = new Error("Email alredy exists.");
-        error.statusCode = 400;
+        error.status = 400;
         throw error
     }
 

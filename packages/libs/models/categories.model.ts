@@ -2,10 +2,10 @@ import sequelize from 'libs/helpers/sequelize.helper'
 import { DataTypes, Model } from 'sequelize'
 
 export class Categories extends Model {
-  id!: number
-  name!:string
-  description!: string
-  created_at!: Date
+  declare id: number
+  declare name:string
+  declare description: string
+  declare created_at: Date
 }
 
 Categories.init(

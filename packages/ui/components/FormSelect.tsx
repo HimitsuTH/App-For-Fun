@@ -42,7 +42,7 @@ export function InputSelect(props: {
 
 
   return (
-      <div style={{display: 'flex', flexDirection: 'column', width: '100%', marginTop: '0.5rem'}}>
+      <div style={{display: 'flex', flexDirection: 'column', width: '100%', padding:'0.5rem'}}>
         <label style={{ marginBottom: '0.5rem'}}>{name[0].toUpperCase() + name.slice(1)}</label>
 
          <Controller

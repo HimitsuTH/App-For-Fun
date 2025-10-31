@@ -1,8 +1,8 @@
-'use client'
+
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 
-import Router from 'next/router'
+// import Router from 'next/router'
 import { AxiosResponse } from 'axios'
 
 const MySwal = withReactContent(Swal)
@@ -37,11 +37,11 @@ export const LoadingAlert = () => {
 const Alert = (props: any) => {
   const handleUnauthorize = () => {
     console.log('-test---------replace router---->')
-     Router.replace('/login')
+    // Router.push('/login')
   }
 
   const handleRedirect = () => {
-    Router.replace(props.data.data.payload.redirect_path)
+    // Router.push(props.data.data.payload.redirect_path)
     Swal.close()
   }
 

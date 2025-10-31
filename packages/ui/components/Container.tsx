@@ -12,12 +12,13 @@ interface ContainerProps {
 
 import styled from 'styled-components'
 
-export const Content = styled.div`
+export const ContentContainer = styled.div`
   overflow: hidden;
-  margin-top: 0.5rem;
-  display: flex;
+  margin-left: 200px;
+  padding: 2em;
+  box-sizing: border-box;
+  margin-top: 4em;
   gap: 0.5rem;
-  height: 100%;
 
   z-index: 2;
   transition: all ease 0.2s;
@@ -31,10 +32,10 @@ export const Container = ({ children, className }: ContainerProps) => {
       className={className} style={{backgroundColor: '#F7F7F7', position: 'relative'}} 
     > 
       <Navbar/>
-      <Content>
-        <LeftSideMenu/>
+      <LeftSideMenu/>
+      <ContentContainer>
         {children}
-      </Content>
+      </ContentContainer>
     </div>
   );
 };

@@ -15,7 +15,7 @@ const userAuth = () => async (req: Request, res: Response, next: NextFunction) =
       if (!req.user) {
 
         const error: ResponseError = new Error("401 unauthenlize...");
-        error.statusCode = 400;
+        error.status = 400;
       }
       next();
     } catch (err) {
@@ -33,7 +33,7 @@ const checkLoginSession = async (
     console.log("user------>", user);
     if (user) {
         const error: ResponseError = new Error("422 The request was rejected.1..");
-        error.statusCode = 422;
+        error.status = 422;
         throw error
     }
     next();
@@ -50,11 +50,12 @@ const checkActiveSession = async (
   try {
     const currentSessionID = req.sessionID;
     const user: any = req.user;
-
+    console.log('-----checkActiveSession-',user)
     if (!user) {
+      
         const error: ResponseError = new Error("404 user not found..2.");
         error.message = "404 user not found..2."
-        error.statusCode = 404;
+        error.status = 404;
         throw error
     }
     console.log("---user.username----user.username----", user.username);
@@ -68,7 +69,7 @@ const checkActiveSession = async (
     );
     if (!activeSessionID || currentSessionID !== activeSessionID){
         const error: ResponseError = new Error("422 The request was rejected.2..");
-        error.statusCode = 422;
+        error.status = 422;
         throw error
     }
       
@@ -94,7 +95,7 @@ const setActiveSession = async (
 
     if (!user){
         const error: ResponseError = new Error("404 user not found..1.");
-        error.statusCode = 404;
+        error.status = 404;
         throw error
     }
     console.log(`userM:${user.username}`, req.sessionID);
@@ -112,7 +113,7 @@ const checkRole = async (req: Request, res: Response, next: NextFunction) => {
     const user: any = req.user;
     if (!user) {
         const error: ResponseError = new Error("422 The request was rejected.3..");
-        error.statusCode = 422;
+        error.status = 422;
         throw error
     } 
 
@@ -120,13 +121,13 @@ const checkRole = async (req: Request, res: Response, next: NextFunction) => {
     const role = user.roles.name;
     if (!role){
         const error: ResponseError = new Error("404 user not found...");
-        error.statusCode = 404;
+        error.status = 404;
         throw error
     }
 
     if (role !== "admin") {
         const error: ResponseError = new Error("422 The request was rejected.4..");
-        error.statusCode = 422;
+        error.status = 422;
         throw error
     }
     next();

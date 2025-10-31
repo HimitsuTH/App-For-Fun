@@ -99,7 +99,7 @@ const Login = () => {
                 Logout
             </button>
 
-            <button onClick={() => router.replace('/receipts')}>
+            <button onClick={() => router.replace('/expenses')}>
                 Navigate to Test
             </button>
         </div>

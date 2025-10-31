@@ -9,7 +9,7 @@ const getCategory = async (req: Request, res: Response, next: NextFunction) => {
         const data = await Categories.findAll()
         if (!data) {
             const error:ResponseError = new Error('404 Data not founded.')
-            error.statusCode = 404;
+            error.status = 404;
             throw error
         }
 
@@ -29,7 +29,7 @@ const addCategories = async (req: Request, res: Response, next: NextFunction) =>
         const user: any = req.user
         if (!user) {
             const error:ResponseError = new Error('422 The request was rejected.')
-            error.statusCode = 422;
+            error.status = 422;
             throw error
         } 
         const { name, description } = req.body
@@ -42,7 +42,7 @@ const addCategories = async (req: Request, res: Response, next: NextFunction) =>
         console.log(duplicate)
         if (duplicate) {
             const error:ResponseError = new Error('400 Duplicate Category.')
-            error.statusCode = 422;
+            error.status = 422;
             throw error
         }
 

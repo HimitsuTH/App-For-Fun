@@ -39,7 +39,7 @@ const addCategories = async (req: Request, res: Response, next: NextFunction) =>
                 name: name.toLowerCase()
             }
         })
-        console.log(duplicate)
+
         if (duplicate) {
             const error:ResponseError = new Error('400 Duplicate Category.')
             error.status = 422;

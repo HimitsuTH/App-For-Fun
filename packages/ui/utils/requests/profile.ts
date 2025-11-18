@@ -46,19 +46,6 @@ export const getProfile = async (dispatch?:any) => {
         throw new Error(error.message || 'Failed to fetch wallet data'); 
         
     }
-    // return new Promise((resolve, reject) => {
-    //     axios.get('http://localhost:8000/profile', {
-    //         withCredentials: true, 
-    //     }).then(({ data }) => {
-    //         console.log('Profile fetch successful:', data);
-    //         setUserAction(dispatch,{...data})
-    //         resolve(data);
-    //     }).catch((err) => {
-    //         console.error('Profile fetch error:', err.response ? err.response.data : err.message);
-    //         reject(err);
-    //     });
-    // });
-    
 };
 
 

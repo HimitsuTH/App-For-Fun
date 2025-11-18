@@ -87,7 +87,6 @@ passport.use(
       await user.update({
         invalid_password_time: null,
       });
-      console.log("test----local ----->");
 
       done(null, { ...userInfo });
     } catch (err) {
@@ -100,7 +99,6 @@ passport.use(
 
 passport.serializeUser((user, done) => {
   try {
-    console.log("------serializeUser------>");
     done(null, user);
   } catch (err) {
     done(err);

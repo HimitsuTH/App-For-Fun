@@ -28,11 +28,11 @@ const getWallet = async (req: Request, res: Response, next: NextFunction) => {
             }
         })
         
-        if (!data) {
-            const error:ResponseError = new Error('404 Wallet not founded.')
-            error.status = 404;
-            throw error
-        }
+        // if (!data) {
+        //     const error:ResponseError = new Error('404 Wallet not founded.')
+        //     error.status = 404;
+        //     throw error
+        // }
 
         res.locals.wallet = data
         next()

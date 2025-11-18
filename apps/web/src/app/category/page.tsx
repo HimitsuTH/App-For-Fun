@@ -8,7 +8,7 @@ import { MainContent } from 'ui/components/Main'
 const Category = () => {
   const { data } = useAppSelector(state => state.user)
   const user = data
-  console.log('user---> web test ---->', data)
+  // console.log('user---> web test ---->', data)
   return (
     <MainContent>
       <h1>LOG TEST category</h1>

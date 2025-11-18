@@ -10,10 +10,9 @@ import { ResponseError } from "../types/auth.type";
 
 const userAuth = () => async (req: Request, res: Response, next: NextFunction) => {
     try {
-      logger.info("testt------auth------->");
-      console.log("0-------auth---------------------------------_>", req.user);
+      // logger.info("--------Test----Check--Authentication------->",req.user);
+      // console.log("0-------auth---------------------------------_>", req.user);
       if (!req.user) {
-
         const error: ResponseError = new Error("401 unauthenlize...");
         error.status = 400;
       }
@@ -50,15 +49,14 @@ const checkActiveSession = async (
   try {
     const currentSessionID = req.sessionID;
     const user: any = req.user;
-    console.log('-----checkActiveSession-',user)
-    if (!user) {
-      
-        const error: ResponseError = new Error("404 user not found..2.");
-        error.message = "404 user not found..2."
-        error.status = 404;
-        throw error
+
+    if (!user) {      
+      const error: ResponseError = new Error("404 user not found..2.");
+      error.message = "404 user not found..2."
+      error.status = 404;
+      throw error
     }
-    console.log("---user.username----user.username----", user.username);
+    // console.log("---user.username----user.username----", user.username);
     const _username = encryption(user.username);
     const activeSessionID = await redisHelper.get(`userM:${_username}`);
     console.log(

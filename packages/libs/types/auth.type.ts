@@ -1,4 +1,4 @@
 export interface ResponseError extends Error {
-  statusCode?: number;
+  status?: number;
   field?: string;
 }

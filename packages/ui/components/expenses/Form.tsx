@@ -30,6 +30,10 @@ const CreateReceipts = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
+  const handleGoBack = () => {
+    router.back(); 
+  };
+
   const { isError } = useQueryCategory(['category'], dispatch)
 
 
@@ -51,7 +55,7 @@ const CreateReceipts = () => {
     console.log('Categort DATA',data)
   }
     return (
-        <form onSubmit={handleSubmit(onSubmit)} style={{ marginBottom: '15px', display: 'flex', justifyContent:'center', flexDirection:'column', alignItems: 'center'}}>
+    <form onSubmit={handleSubmit(onSubmit)} style={{ marginBottom: '15px', display: 'flex', justifyContent:'center', flexDirection:'column', alignItems: 'center', width: '100%'}}>
         <div style={{ display: 'grid', gridTemplateColumns:'repeat(2, 1fr)', gap: '0 1rem'}}>
             <Input register={register} field="name" errors={errors} control={control}/>
             <Input register={register} field="amount" errors={errors} control={control}/>
@@ -67,24 +71,52 @@ const CreateReceipts = () => {
             <Input register={register} field="date" type="date" errors={errors} control={control}/>
         </div>
 
-        <button
-            type="submit"
-            style={{
-                padding: '10px 20px',
-                fontSize: '16px',
-                backgroundColor: '#4CAF50',
-                color: 'white',
-                border: 'none',
-                borderRadius: '5px',
-                cursor: 'pointer',
-                boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
-                transition: 'background-color 0.3s ease'
-            }}
-            onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#45a049'}
-            onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#4CAF50'}
-        >
-            Submit
-        </button>
+        {/* --- Button Container for grouping buttons --- */}
+        <div style={{ marginTop: '15px', display: 'flex', gap: '10px' }}>
+            
+            {/* 1. Back Button */}
+            <button
+                type="button" // Important: set type="button" to prevent form submission
+                onClick={handleGoBack}
+                style={{
+                    padding: '10px 20px',
+                    fontSize: '16px',
+                    backgroundColor: '#6c757d', // A gray color for contrast
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '5px',
+                    cursor: 'pointer',
+                    boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
+                    transition: 'background-color 0.3s ease'
+                }}
+                onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#5a6268'}
+                onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#6c757d'}
+            >
+                Back
+            </button>
+            
+            {/* 2. Submit Button (Existing) */}
+            <button
+                type="submit"
+                style={{
+                    padding: '10px 20px',
+                    fontSize: '16px',
+                    backgroundColor: '#4CAF50',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '5px',
+                    cursor: 'pointer',
+                    boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
+                    transition: 'background-color 0.3s ease'
+                }}
+                onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#45a049'}
+                onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#4CAF50'}
+            >
+                Submit
+            </button>
+
+        </div>
+        {/* --------------------------------------------- */}
     </form>
     )
 }

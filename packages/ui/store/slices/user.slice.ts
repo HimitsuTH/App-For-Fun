@@ -8,6 +8,10 @@ interface User {
     name: string
   };
   status: string
+  wallet: {
+    balance: number;
+    currency: 'THB'
+  }
 }
 
 interface InitialState {

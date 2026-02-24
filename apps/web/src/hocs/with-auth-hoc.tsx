@@ -19,8 +19,8 @@ const withAuthenticated = (
       const router = useRouter()
       console.log('---user-------ComponentWithAuthenticated-----with-->',user)
       console.log('=-------------------1---------------------->')
-      const { isError } = useQueryProfile(['profile', user], user, dispatch)
 
+      const { isError } = useQueryProfile(['profile', user], user, dispatch)
       console.log('isError--->',isError)
 
       useEffect(() => {

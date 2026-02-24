@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from "express";
-import { User } from "../models";
+import { User, Wallet } from "../models";
 import sequelize from "../helpers/sequelize.helper";
 import { encryption } from "../helpers/crypto.helper";
+import { generateUnsafeDigitFromUUID } from "../helpers/generateUUID.helper";
 
 import bcrypt from "bcrypt";
-import Wallet from "../models/wallet.model";
 import { ResponseError } from "../types/auth.type";
 
 const localRegister = async (
@@ -24,15 +24,18 @@ const localRegister = async (
     });
     if (existsEmail) {
         const error: ResponseError = new Error("Email alredy exists.");
-        error.statusCode = 400;
+        error.status = 400;
         throw error
     }
 
     const sait = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(password, sait);
 
+    console.log('generateUnsafeDigitFromUUID---->',generateUnsafeDigitFromUUID())
+
     const user = await User.create(
-      {
+      { 
+        uuid: generateUnsafeDigitFromUUID(),
         username: encryption(username),
         password: hashPassword,
         email: encryption(email),

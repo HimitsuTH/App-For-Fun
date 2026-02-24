@@ -1,8 +1,8 @@
-'use client'
+
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 
-import Router from 'next/router'
+// import Router from 'next/router'
 import { AxiosResponse } from 'axios'
 
 const MySwal = withReactContent(Swal)
@@ -37,11 +37,11 @@ export const LoadingAlert = () => {
 const Alert = (props: any) => {
   const handleUnauthorize = () => {
     console.log('-test---------replace router---->')
-     Router.replace('/login')
+    // Router.push('/login')
   }
 
   const handleRedirect = () => {
-    Router.replace(props.data.data.payload.redirect_path)
+    // Router.push(props.data.data.payload.redirect_path)
     Swal.close()
   }
 
@@ -110,7 +110,7 @@ const Alert = (props: any) => {
       case 403:
         return MySwal.fire({
           icon: 'error',
-          text: response.data.res_desc || 'FORBIDDEN',
+          text: response.data.message || 'FORBIDDEN',
           // confirmButtonColor: colors.DANGER,
           confirmButtonText: 'OK',
           // backdrop: `${colors.BLACK}DA`,
@@ -148,7 +148,7 @@ const Alert = (props: any) => {
       case 500:
         return MySwal.fire({
           icon: 'error',
-          text: '500',
+          text:  `${response?.data?.message}`,
           confirmButtonColor: "#333",
           confirmButtonText: 'OK',
           // backdrop: `${colors.BLACK}DA`,
@@ -206,6 +206,7 @@ const Alert = (props: any) => {
         } else {
           return MySwal.fire({
             icon: 'error',
+            text: `${response.data.message}`,
             // text: response?.data?.res_desc || resultValidation('0001').message,
             // confirmButtonColor: colors.DANGER,
             confirmButtonText: 'OK',
@@ -242,6 +243,7 @@ const Alert = (props: any) => {
       default:
         return MySwal.fire({
           icon: 'error',
+          text: `${response.data.message }`,
           // text: response?.data?.res_desc || resultValidation('0001').message,
           // confirmButtonColor: colors.DANGER,
           confirmButtonText: 'OK',

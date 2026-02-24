@@ -13,8 +13,6 @@ export const loginRequest = async (data: any, dispatch: any, router: any) => {
         }, {
             withCredentials: true,
         });
-
-        console.log('response--------------->', response);
         dispatch(setUser(response.data));
         router.replace('/');
     } catch (err: any){

@@ -3,6 +3,7 @@ import { DataTypes, Model } from 'sequelize'
 
 export class User extends Model {
   declare id: number; 
+  declare uuid: string; 
   declare username:string
   declare password: string
   declare email: string
@@ -14,7 +15,7 @@ export class User extends Model {
 }
 
 User.init(
-  {
+  { 
     username: {
       type: DataTypes.STRING(50),
     },

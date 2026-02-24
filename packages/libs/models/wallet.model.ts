@@ -1,9 +1,11 @@
 // models/wallet.model.ts
 import { Model, DataTypes } from 'sequelize'
 import sequelize from 'libs/helpers/sequelize.helper'
-import { User } from './users.model'
 
-class Wallet extends Model {}
+export class Wallet extends Model {
+  declare balance: number
+  declare currency: string
+}
 
 Wallet.init({
   id: {
@@ -14,6 +16,10 @@ Wallet.init({
   user_id: {
     type: DataTypes.BIGINT,
     allowNull: false,
+    references: {
+        model: 'users',
+        key: 'id',
+    },
   },
   balance: {
     type: DataTypes.DECIMAL(18, 2),
@@ -31,7 +37,3 @@ Wallet.init({
   updatedAt: 'updated_at',
 })
 
-Wallet.belongsTo(User, { foreignKey: 'user_id' })
-User.hasOne(Wallet, { foreignKey: 'user_id' })
-
-export default Wallet

@@ -54,29 +54,48 @@ const Login = () => {
     if (!isInitialized) return null
 
     return (
-        <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+        <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif', width: '100%' }}>
             <h2 style={{ marginBottom: '20px' }}>Login/Logout Test</h2>
-            <form onSubmit={handleSubmit(onSubmit)} style={{ marginBottom: '15px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <Input field="username" register={register} errors={errors} control={control}/>
+           <form onSubmit={handleSubmit(onSubmit)} style={{
+                marginBottom: '30px', /* Increased spacing below the form */
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                padding: '40px', /* Padding inside the form container */
+                backgroundColor: '#ffffff', /* White background for the form area */
+                borderRadius: '12px', /* Rounded corners for a softer look */
+                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)', /* Subtle, modern shadow */
+                maxWidth: '350px', /* Set a max-width for the form */
+                margin: '0 auto' /* Center the form horizontally */
+            }}>
+                <Input field="username" register={register} errors={errors} control={control} placeholder={'xxx@xxx.xxx'}/>
                 <Input field="password" type="password" register={register} errors={errors} control={control}/>
 
                 <button
                     type="submit"
                     style={{
-                        padding: '10px 20px',
-                        fontSize: '16px',
-                        backgroundColor: '#4CAF50',
+                        width: '100%', /* Full width button */
+                        padding: '12px 0', /* Vertical padding */
+                        fontSize: '18px',
+                        fontWeight: '600', /* Slightly bolder text */
+                        backgroundColor: '#007bff', /* A modern blue */
                         color: 'white',
                         border: 'none',
-                        borderRadius: '5px',
+                        borderRadius: '8px', /* Nicely rounded corners */
                         cursor: 'pointer',
-                        boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
-                        transition: 'background-color 0.3s ease'
+                        boxShadow: '0 4px 10px rgba(0,0,0,0.1)', /* Shadow for lift */
+                        transition: 'background-color 0.3s ease, box-shadow 0.3s ease',
                     }}
-                    onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#45a049'}
-                    onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#4CAF50'}
+                    onMouseOver={(e) => {
+                        e.currentTarget.style.backgroundColor = '#0056b3'; /* Darker blue on hover */
+                        e.currentTarget.style.boxShadow = '0 6px 15px rgba(0,0,0,0.2)';
+                    }}
+                    onMouseOut={(e) => {
+                        e.currentTarget.style.backgroundColor = '#007bff';
+                        e.currentTarget.style.boxShadow = '0 4px 10px rgba(0,0,0,0.1)';
+                    }}
                 >
-                    Login
+                    Sign In
                 </button>
             </form>
 
@@ -99,7 +118,7 @@ const Login = () => {
                 Logout
             </button>
 
-            <button onClick={() => router.replace('/receipts')}>
+            <button onClick={() => router.replace('/expenses')}>
                 Navigate to Test
             </button>
         </div>

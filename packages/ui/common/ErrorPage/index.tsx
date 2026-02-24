@@ -22,11 +22,7 @@ const ErrorComponent = (props: propsInterface) => {
         !props.hideButton
           ? (
             <button
-            //   label={props.buttonLabel || t('commons:BACK_TO_MAIN_PAGE')}
-            //   width='max-content'
-            //   containerStyle={{
-            //     marginTop: '0.5em',
-            //   }}
+              style={{padding:'1.5rem', 'width': '150px', background: '#f3f3f3', borderRadius: '2rem', border: 'none', cursor: 'pointer', transition: 'all 0.25s'}}
               onClick={() => {
                 try {
                   if (props.buttonOnClick) {
@@ -42,7 +38,9 @@ const ErrorComponent = (props: propsInterface) => {
                   }
                 } catch (err) { }
               }}
-            >TEST</button>
+              onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#e6e6e6")}
+              onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#f3f3f3")}
+            >back</button>
           )
           : null
       }

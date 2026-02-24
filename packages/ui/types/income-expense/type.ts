@@ -22,4 +22,10 @@ export const expenseSchema = z.object({
   date: z.string().nonempty('Request field Date.'),
 });
 
+export const categorySchema = z.object({
+  name: z.string().nonempty('Request field Name.'),
+  description: z.string(),
+});
+
 export type TExpenseSchema = z.infer<typeof expenseSchema>;
+export type TCategorySchema = z.infer<typeof categorySchema>;

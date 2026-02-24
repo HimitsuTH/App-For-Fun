@@ -1,68 +1,55 @@
 'use client';
-import Image, { type ImageProps } from "next/image";
-// import { Button } from 'ui/components/button'
-import styles from "./page.module.css";
+
 import withAuthenticated from "../hocs/with-auth-hoc";
-// import { useAppDispatch } from "ui/store/hooks";
+import { useAppSelector } from "ui/store/hooks";
 import { useRouter } from 'next/navigation'
+import { useQuery } from "@tanstack/react-query";
 
-type Props = Omit<ImageProps, "src"> & {
-  srcLight: string;
-  srcDark: string;
-};
+import { getWallet } from "ui/utils/requests/profile";
 
+import { MainContent } from 'ui/components/Main'
 
- function Home() {
+import styled from "styled-components";
+import { BarChartComponent, BarChartMonthComponent } from 'ui/components/expenses/BarChart'
+
+const BalanceContainer = styled.div`
+  padding: 3rem;
+  background-color: #f3f3f3;
+  border-radius: 100%;
+  width: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`
+
+function Home() {
   const router = useRouter()
+  const user = useAppSelector(state => state.user)
+
+   const { data } = useQuery({
+        queryKey: ['wallet'],
+        queryFn: () => getWallet(user?.data?.id)
+    })
+
+
   return (
-    <div style={{backgroundColor:'#fff', width: '100%'}}>
-          <button onClick={()=> router.push('/login')}>
+    <MainContent>
+        <button onClick={()=> router.push('/login')}>
           Navigate to Test
         </button>
-      <main className={styles.main}>
-        <ol>
-          <li>
-            Get started by editing <code>apps/web/app/page.tsx</code>
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+      <section style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
+        <h1>HOME</h1>
 
-        <button  className={styles.secondary}>
-          Open alert
-        </button>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com/templates?search=turborepo&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://turborepo.com?utm_source=create-turbo"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to turborepo.com →
-        </a>
-      </footer>
-  
-    </div>
+        <BalanceContainer><p>{data?.wallet?.balance || '-'}</p><p style={{ marginLeft: '0.25em'}}>{data?.wallet?.currency}</p></BalanceContainer>
+
+        <div style={{ display: 'flex', justifyContent: 'space-around', width: '100%'}}>
+          <BarChartMonthComponent/>
+          <BarChartComponent/>
+        </div>
+      </section>
+    
+    </MainContent>
   );
 }
 

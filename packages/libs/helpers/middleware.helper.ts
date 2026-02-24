@@ -58,6 +58,7 @@ const checkActiveSession = async (
     const activeSessionID = await redisHelper.get(`userM:${_username}`);
     console.log(
       "checkActiveSession-->",
+      _username,
       user,
       currentSessionID,
       activeSessionID
@@ -93,9 +94,13 @@ const setActiveSession = async (
         error.status = 404;
         throw error
     }
-    console.log(`userM:${user.username}`, req.sessionID);
+
+    // ✅ fix: เก็บ key ด้วย _username (encrypted จาก req.body)
+    // checkActiveSession จะ encryption(req.user.username) ซึ่ง req.user.username = decrypted
+    // encryption(decrypted) = _username เดิม → key ตรงกัน
+    console.log(`userM:${_username}`, req.sessionID);
     logger.info("-------------------setActiveSession-------------------------");
-    await redisHelper.set(`userM:${user.username}`, req.sessionID);
+    await redisHelper.set(`userM:${_username}`, req.sessionID);
     next();
   } catch (err) {
     next(err);

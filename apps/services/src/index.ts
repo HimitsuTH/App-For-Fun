@@ -37,9 +37,9 @@ app.use(
     resave: true,
     saveUninitialized: false,
     cookie: {
-      maxAge: 1000 * 60 * 60 * 24, // 1 day
-      secure: false,           // false สำหรับ http localhost (true เฉพาะ https production)
-      sameSite: "none" as const, // ต้องเป็น none เพื่อให้ cookie ติดข้าม port (3000 → 8000)
+      maxAge: 1000 * 60 * 60 * 24,
+      secure: false,
+      sameSite: "lax" as const,  // lax ใช้ได้บน http, ทำงานได้เพราะ request ผ่าน Next.js proxy (same-origin)
       httpOnly: true,
     },
   })

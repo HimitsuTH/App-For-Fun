@@ -74,9 +74,9 @@ export const getCategory = async (dispatch?:any) => {
 
     } catch (error : any) {
         Swal.close()
-        console.log('----------------_ERORORORORO_------------------')
         dispatch(cleanCategory())
         console.error('Category fetch error:', error);
+        throw error  // ← ต้อง throw เพื่อให้ React Query รู้ว่า query ล้มเหลว (ไม่งั้นได้ undefined)
     }
 };
 

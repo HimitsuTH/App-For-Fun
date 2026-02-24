@@ -3,19 +3,15 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation'
 
-import { TExpenseSchema, expenseSchema } from 'ui/types/income-expense/type'
+import { TCategorySchema, categorySchema } from 'ui/types/income-expense/type'
 
 import { Input } from 'ui/components/Input'
-import { InputSelect } from "../FormSelect";
-import { useQueryCategory } from "../../utils/requests/category";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { Category } from "../../store/slices/category.slice";
 
-import { createExpense } from "../../utils/requests/expense";
+import { createCategory } from "../../utils/requests/category";
 
-import expenseType from 'ui/constants/expense.type.json'
 
-const CreateReceipts = () => {
+const CreateCategory = () => {
       const {
       register,
       handleSubmit,
@@ -23,52 +19,29 @@ const CreateReceipts = () => {
       reset,
       setError,
       control
-  } = useForm<TExpenseSchema>({
-      resolver: zodResolver(expenseSchema),
+  } = useForm<TCategorySchema>({
+      resolver: zodResolver(categorySchema),
   });
 
   const dispatch = useAppDispatch();
   const router = useRouter();
 
+  const user = useAppSelector(state => state.user)
+
   const handleGoBack = () => {
     router.back(); 
   };
-
-  const { isError } = useQueryCategory(['category'], dispatch)
-
-
-  if ( isError ) {
-    console.log('0-----------------Category ERROR------->')
-  }
-
-  const user = useAppSelector(state => state.user)
-  const category = useAppSelector(state => state.categoy.data) as Category[]
-
-  if (!category) console.log(category,'not found')
-
-  console.log('category---->',category)
-
-  const type = expenseType.EXPENSE.TYPE
   
   const onSubmit = (data:any) => {
-    createExpense(data,user, dispatch, router)
+    createCategory(data,user, dispatch, router)
     console.log('Categort DATA',data)
   }
     return (
     <form onSubmit={handleSubmit(onSubmit)} style={{ marginBottom: '15px', display: 'flex', justifyContent:'center', flexDirection:'column', alignItems: 'center', width: '100%'}}>
         <div style={{ display: 'grid', gridTemplateColumns:'repeat(2, 1fr)', gap: '0 1rem'}}>
             <Input register={register} field="name" errors={errors} control={control}/>
-            <Input register={register} field="amount" errors={errors} control={control}/>
+            
             <Input register={register} field="description" errors={errors} control={control}/>
-            <InputSelect name="category" control={control} errors={errors} options={category?.map((c:any) => {
-                return {
-                    id: c.id,
-                    value: c.name,
-                    label: c.name[0].toUpperCase() + c.name.slice(1)
-                }
-            })}/>
-            <InputSelect name="type" control={control} errors={errors} options={type}/>
-            <Input register={register} field="date" type="date" errors={errors} control={control}/>
         </div>
 
         {/* --- Button Container for grouping buttons --- */}
@@ -121,4 +94,4 @@ const CreateReceipts = () => {
     )
 }
 
-export default CreateReceipts
+export default CreateCategory

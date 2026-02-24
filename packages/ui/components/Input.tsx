@@ -5,8 +5,14 @@ import { Control } from "react-hook-form";
 const InputContainer = styled.div`
   display: flex;
   padding: 0.5rem;
-  width: 300px;
+  width: 250px;
   flex-decoration: column;
+
+  @media screen and (max-width: 768px) {
+    width: 150px;
+    // padding: 0;
+  }
+
 `
 
 export function Input(props: {
@@ -15,6 +21,7 @@ export function Input(props: {
   type?: string
   errors: any
   control: Control<any,any>
+  placeholder?: string
 }): JSX.Element {
   const { register , field } = props
 
@@ -28,7 +35,7 @@ export function Input(props: {
         <input
           {...register(field)}
           control={props.control}
-          placeholder={field[0].toUpperCase() + field.slice(1)}
+          placeholder={props.placeholder ? props.placeholder : `Provide ${field[0].toUpperCase() + field.slice(1)}`}
           type={props.type}
           style={{ padding: '10px', marginTop: '0.5rem', display: 'block', width: '100%' }}
         />

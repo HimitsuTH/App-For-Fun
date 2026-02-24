@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { useQuery } from '@tanstack/react-query'
+import { redirect } from 'next/navigation';
 // import { clearUserAction, setUserAction } from '../../store/actions/user.action'
 import { cleanUser, setUser } from '../../store/slices/user.slice'
 import Swal from 'sweetalert2'
@@ -21,13 +22,7 @@ export const getProfile = async (dispatch?:any) => {
         console.log('DATA----------------->',data)
         if (!data.data) {
             dispatch(cleanUser())
-            // throw new Error('No user data received');
-
-            return null
-            // } else {
-            //     if (data.user.redirect_path && Router.route !== data.user.redirect_path) {
-            //     Router.push(data.user.redirect_path)
-            // }
+            throw new Error('No user data received');
         }
 
         dispatch(setUser(data.data))
@@ -43,7 +38,7 @@ export const getProfile = async (dispatch?:any) => {
         console.log('--------------1-----2-3-4-5-----------')
         dispatch(cleanUser())
         console.error('Profile fetch error:', error);
-        throw new Error(error.message || 'Failed to fetch wallet data'); 
+        redirect('/login')
         
     }
 };

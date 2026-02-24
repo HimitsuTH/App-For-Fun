@@ -50,7 +50,8 @@ export function InputSelect(props: {
             control={props.control}
             render={({ field }) => <Select
               {...field}
-
+              maxMenuHeight={170}
+              menuPlacement="auto"
               options={props.options || []}
             //   styles={customStyles(props)}
             //   noOptionsMessage={() => (

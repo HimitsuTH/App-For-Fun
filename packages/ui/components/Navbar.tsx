@@ -12,11 +12,10 @@ import styled from 'styled-components'
 
 export const Nav = styled.div`
   overflow: hidden;
-  padding: 1rem;
+  // padding: 0.5rem;
   // display: flex;
   // flex-direction: row;
   // justify-content: space-between;
-  background-color: #fff;
 
   transition: all ease 0.2s;
 
@@ -36,6 +35,13 @@ export const Nav = styled.div`
   @media screen and (max-width: 960px) {
     padding-left: calc(50px + 1em);
   }
+
+  @media screen and (max-width: 768px) {
+    display: flex;
+    justify-content: space-around;
+    padding-left: 0;
+    // justify-content: space-between;
+  }
 `
 
 export const NavList = styled.div`
@@ -43,6 +49,7 @@ export const NavList = styled.div`
   flex-direction: row;
   align-items: center;
   gap: 0.5rem;
+  margin-right: 1rem;
 
 `
 
@@ -71,7 +78,7 @@ export const Navbar = ({ children, className }: NavbarProps) => {
   return (
     <Nav className={`${className}`}>
       <div>
-        <LinkComponent title="Home"/>
+        <LinkComponent title="Home" isHome={true}/>
       </div>
       <NavList>
         <UserStatus status={user?.status}/>

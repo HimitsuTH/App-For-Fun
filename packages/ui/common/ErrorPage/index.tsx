@@ -40,7 +40,7 @@ const ErrorComponent = (props: propsInterface) => {
               }}
               onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#e6e6e6")}
               onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#f3f3f3")}
-            >BACK</button>
+            >back</button>
           )
           : null
       }

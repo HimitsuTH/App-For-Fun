@@ -17,11 +17,17 @@ export const ContentContainer = styled.div`
   margin-left: 200px;
   padding: 2em;
   box-sizing: border-box;
-  margin-top: 4em;
+  margin-top: 2.5em;
   gap: 0.5rem;
 
   z-index: 2;
   transition: all ease 0.2s;
+
+  @media (max-width: 768px) {
+    margin-left: 100px;
+    margin-top: 3.5em;
+    padding: 1em;
+  }
 `
 
 

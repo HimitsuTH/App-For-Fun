@@ -23,7 +23,7 @@ export const BarChartComponent = () => {
   const dispatch = useAppDispatch();
 
   useQuery({
-    queryKey: ["category"],
+    queryKey: ["categorise"],
     queryFn: () => getCategory(dispatch),
   });
 
@@ -81,7 +81,6 @@ export const BarChartComponent = () => {
     </div>
   );
 };
-
 
 const calculateMonthlyExpenses = (expenses: expensesType[] | undefined) => {
   if (!expenses) {

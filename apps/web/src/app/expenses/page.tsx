@@ -2,7 +2,6 @@
 
 import withAuthenticated from "../../hocs/with-auth-hoc";
 // import { useAppDispatch } from "ui/store/hooks";
-import { useRouter } from 'next/navigation'
 
 import { MainContent } from 'ui/components/Main'
 
@@ -11,7 +10,7 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { getExpenses } from "ui/utils/requests/expense";
 import { useQuery } from "@tanstack/react-query";
 
-import { ButtonCustom } from 'ui/components/Button'
+import { ButtonCustom } from 'ui/components/ButtonLink'
 import { dateToText } from 'ui/utils/date.util'
 
 function Expenses() {
@@ -79,7 +78,7 @@ function Expenses() {
 
   return (
     <MainContent>
-      <ButtonCustom title="Create" href="/expenses/create"/>
+      <ButtonCustom title="Create" href="/expenses/create" type={'create'}/>
       <main>
       <DataGrid
         rows={data?.expenses}
@@ -92,8 +91,39 @@ function Expenses() {
           },
         }}
         pageSizeOptions={[5]}
-        checkboxSelection
+        checkboxSelection={false}
         disableRowSelectionOnClick
+        sx={{
+          boxShadow: 'none',
+
+          // 💡 HEADER STYLES WITH COLOR
+          '$ .MuiDataGrid-topContainer' : {
+            backgroundColor: '#0000'
+          },
+          '& .MuiDataGrid-columnHeaders': {
+            borderBottom: '2px solid #1976d2',
+            fontSize: '0.95rem',
+            fontWeight: 'bold',
+          },
+          // --- (Rest of the clean styles from before) ---
+          '& .MuiDataGrid-cell': {
+            borderBottom: '1px solid #eee',
+          },
+          '& .MuiDataGrid-row:nth-of-type(odd)': {
+            backgroundColor: '#fff',
+          },
+          '& .MuiDataGrid-row:nth-of-type(even)': {
+            backgroundColor: '#fafafa',
+          },
+          '& .MuiDataGrid-row:hover': {
+            backgroundColor: '#eaf6ff',
+            transition: 'background-color 0.2s',
+          },
+          '& .MuiDataGrid-footerContainer': {
+            borderTop: '1px solid #ddd',
+            backgroundColor: '#f9f9f9',
+          },
+        }}
       />
       </main>
 

@@ -20,6 +20,8 @@ export const createExpense = async (data: any, user:any, dispatch: any, router: 
             withCredentials: true,
         });
 
+        console.log('test--response-createExpense->',response)
+
         // dispatch(setUser(response.data));
         Swal.close()
         router.replace('/expenses');

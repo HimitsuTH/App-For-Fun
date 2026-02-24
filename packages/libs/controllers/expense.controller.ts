@@ -95,6 +95,8 @@ const addExpense = async (req: Request, res: Response, next: NextFunction) => {
             type,
             created_at: new Date()
         }, { transaction })
+        console.log('---------------------------------------------------------')
+        console.log('user.wallet.balance----->',user)
 
         let balance = Number(user.wallet.balance)
 

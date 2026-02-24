@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { User, Wallet } from "../models";
 import sequelize from "../helpers/sequelize.helper";
 import { encryption } from "../helpers/crypto.helper";
+import { generateUnsafeDigitFromUUID } from "../helpers/generateUUID.helper";
 
 import bcrypt from "bcrypt";
 import { ResponseError } from "../types/auth.type";
@@ -30,8 +31,11 @@ const localRegister = async (
     const sait = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(password, sait);
 
+    console.log('generateUnsafeDigitFromUUID---->',generateUnsafeDigitFromUUID())
+
     const user = await User.create(
-      {
+      { 
+        uuid: generateUnsafeDigitFromUUID(),
         username: encryption(username),
         password: hashPassword,
         email: encryption(email),

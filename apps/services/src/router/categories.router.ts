@@ -31,4 +31,17 @@ router.post(
   }
 );
 
+router.post(
+  "/delete",
+  middlewareHelper.checkRole,
+  categoryController.deleteCategorise,
+  async (req, res, next) => {
+    res.locals.body = {
+      res_code: "202",
+      res_desc: "success",
+    };
+    res.json(res.locals.body);
+    next();
+  }
+);
 export default router;

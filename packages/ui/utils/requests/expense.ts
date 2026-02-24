@@ -4,11 +4,13 @@ import Swal from "sweetalert2";
 
 import Alert, { LoadingAlert } from 'ui/common/Alert'
 
+const PROXY = '/api'
+
 
 export const createExpense = async (data: any, user:any, dispatch: any, router: any) => {
     try {
         LoadingAlert()
-        const response = await axios.post('http://localhost:8000/expense', {
+        const response = await axios.post(`${PROXY}/expense`, {
             "name": data.name,
             "description": data.description,
             "amount": data.amount,
@@ -36,7 +38,7 @@ export const createExpense = async (data: any, user:any, dispatch: any, router: 
 
 export const getExpenses = (): Promise<any> => {
   return new Promise((resolve, reject) => {
-    axios.get('http://localhost:8000/expense', {
+    axios.get(`${PROXY}/expense`, {
         withCredentials: true,
     })
       .then((res) => {

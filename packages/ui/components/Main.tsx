@@ -3,12 +3,15 @@
 import styled from 'styled-components'
 
 export const MainContent = styled.main`
-  overflow: hidden;
-  width: 100%;
-  background-color: #fff;
-  padding: 0.5rem;
+  margin-left: var(--sidebar-width, 40px);
+  margin-top: var(--navbar-height, 20px);
+  min-height: calc(100vh - var(--navbar-height, 60px));
+  background-color: var(--bg-base, #f5f6fa);
+  padding: 1.5rem 2rem;
+  transition: margin-left 0.2s ease;
 
-
-  z-index: 2;
-  transition: all ease 0.2s;
+  @media screen and (max-width: 768px) {
+    margin-left: 64px;
+    padding: 1rem;
+  }
 `

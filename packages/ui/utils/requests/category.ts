@@ -5,14 +5,12 @@ import { cleanCategory, setCategory } from '../../store/slices/category.slice'
 import Swal from 'sweetalert2'
 import Alert, { LoadingAlert } from 'ui/common/Alert'
 
-const host = "http://localhost"
-const port = 8000
-
+const PROXY = '/api'
 
 export const createCategory = async (data: any, user:any, dispatch: any, router: any) => {
     try {
         LoadingAlert()
-        const response = await axios.post('http://localhost:8000/categories', {
+        const response = await axios.post(`${PROXY}/categories`, {
             "name": data.name,
             "description": data.description,
         }, {
@@ -36,7 +34,7 @@ export const createCategory = async (data: any, user:any, dispatch: any, router:
 export const deleteCategorise = async (data: any) => {
     try {
         LoadingAlert()
-        const response = await axios.post('http://localhost:8000/categories/delete', {
+        const response = await axios.post(`${PROXY}/categories/delete`, {
             items: data
         }, {
             withCredentials: true,
@@ -61,7 +59,7 @@ export const getCategory = async (dispatch?:any) => {
     try {
         console.log('><<><><><><><><><>START GET CATEGORY<><><><<<>1<><><><>')
 
-        const data = await axios.get(`${host}:${port}/categories`, {
+        const data = await axios.get(`${PROXY}/categories`, {
             withCredentials: true, 
         })
 

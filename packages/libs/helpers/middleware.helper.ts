@@ -10,11 +10,10 @@ import { ResponseError } from "../types/auth.type";
 
 const userAuth = () => async (req: Request, res: Response, next: NextFunction) => {
     try {
-      // logger.info("--------Test----Check--Authentication------->",req.user);
-      // console.log("0-------auth---------------------------------_>", req.user);
       if (!req.user) {
-        const error: ResponseError = new Error("401 unauthenlize...");
-        error.status = 400;
+        const error: ResponseError = new Error("Unauthorized");
+        error.status = 401;
+        throw error; // ← fix: ต้อง throw ไม่งั้น next() ถูกเรียกต่อแม้ไม่มี user
       }
       next();
     } catch (err) {
@@ -52,11 +51,9 @@ const checkActiveSession = async (
 
     if (!user) {      
       const error: ResponseError = new Error("404 user not found..2.");
-      error.message = "404 user not found..2."
       error.status = 404;
       throw error
     }
-    // console.log("---user.username----user.username----", user.username);
     const _username = encryption(user.username);
     const activeSessionID = await redisHelper.get(`userM:${_username}`);
     console.log(

@@ -2,115 +2,72 @@ import { type JSX } from "react";
 import Link from 'next/link';
 import styled, { css } from 'styled-components'
 
-interface IconProps {
-  initial: string;
-}
-
-// Placeholder Icon Component
-const HomeIcon = () => <span>🏠</span>;
-const MenuIcon = ( { initial }: IconProps) => <span>{initial}</span>; 
-
 interface LinkProps {
   title: string;
   href?: string;
-  isHome?: boolean;
+  ishome?: boolean;
 }
 
-interface LinkContainerProps {
-  isHome: boolean;
-}
+const SidebarLink = styled(Link)<{ $isHome?: boolean }>`
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--sidebar-text, #a0a8c0);
+  transition: all 0.18s ease;
+  white-space: nowrap;
 
-// Styles specifically for the non-home (Menu) link
-const menuLinkStyles = css`
-    background-color: #F7F7F7;
-    border-radius: 20px;
-    width: 100%;
-    font-size: 14px;
-    
-    /* 💥 Hover Effect for Menu Link 💥 */
-    &:hover {
-        background-color: #e0e0e0; /* Darker gray on hover */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle lift effect */
-        transform: translateY(-1px); /* Slight upward shift */
-        transition: all 0.2s ease-in-out; 
-    }
-`;
+  &:hover {
+    background: var(--sidebar-hover-bg, rgba(255,255,255,0.06));
+    color: var(--sidebar-active, #ffffff);
+  }
 
-export const LinkContainer = styled.div<LinkContainerProps>`
-    position: relative;
-    padding: 0.5rem;
+  /* Active state - you can use next/link activeClassName or CSS */
+  @media screen and (max-width: 768px) {
+    justify-content: center;
+    padding: 0.6rem;
+    gap: 0;
+  }
+`
 
-    /* Target the Next.js Link component (the actual "button") */
-    a {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      
-      width: 100%;
-      text-decoration: none;
-      color: #333;
-      border: 1px solid #E0E0E0;
-      cursor: pointer;
-      
-      /* Apply menu styles if not home */
-      ${props => !props.isHome && menuLinkStyles}
-    }
+const IconBadge = styled.span`
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+`
 
-    /* Conditional Styling for the Home link */
-    ${props => props.isHome && css`
-      /* Container background and border for Home */
-      // background-color: #e6f7ff; 
-      width: 200px;
-      
-      a {
-        font-weight: bold;
-        color: #1890ff;
-        background-color: transparent;
-        border: none;
-        
-        /* 💥 Hover Effect for Home Link 💥 */
-        &:hover {
-            background-color: #d9f0ff; /* Lighter blue hover for Home */
-            transition: background-color 0.2s ease-in-out;
-        }
-      }
-    `}
-
-    /* Responsive styles for title/icon toggle */
-    @media (max-width: 768px) {
-      width: 50px;
-      padding: 0.5rem 0.25rem;
-    }
-`;
-
-
-// (LinkTitle and LinkIcon remain the same)
 const LinkTitle = styled.span`
-  display: block; 
-  @media (max-width: 768px) {
+  @media screen and (max-width: 768px) {
     display: none;
   }
-`;
+`
 
-const LinkIcon = styled.span`
-  display: none; 
-  @media (max-width: 768px) {
-    display: block;
-    font-size: 1rem;
-  }
-`;
+const ICONS: Record<string, string> = {
+  'หน้าหลัก': '🏠',
+  'Home': '🏠',
+  'รายรับ-รายจ่าย': '💳',
+  'Expenses list': '💳',
+  'หมวดหมู่': '🗂️',
+  'Category': '🗂️',
+}
 
-
-export const LinkComponent = ({title, href, isHome = false}: LinkProps): JSX.Element => {
-  const icon = isHome ? <HomeIcon /> : <MenuIcon initial={title[0]} />;
+export const LinkComponent = ({title, href, ishome = false}: LinkProps): JSX.Element => {
+  const icon = ICONS[title] || title[0];
 
   return (
-    // The hover effect is applied via the $isHome prop check in the styled-component
-    <LinkContainer isHome={isHome}>
-      <Link href={href ? href : '/'}>
-        <LinkTitle>{title}</LinkTitle>
-        <LinkIcon>{icon}</LinkIcon>
-      </Link>
-    </LinkContainer>
+    <SidebarLink href={href ? href : '/'} $isHome={ishome}>
+      <IconBadge>{icon}</IconBadge>
+      <LinkTitle>{title}</LinkTitle>
+    </SidebarLink>
   )
 }
+
+// Keep old exports for backward compat
+export const LinkContainer = styled.div``

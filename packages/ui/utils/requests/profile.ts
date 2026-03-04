@@ -30,7 +30,7 @@ export const getProfile = async (dispatch?: any) => {
         Swal.close()
         dispatch(cleanUser())
         console.error('Profile fetch error:', error);
-        redirect('/login')
+        throw new error
     }
 };
 

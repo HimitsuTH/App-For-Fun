@@ -3,8 +3,9 @@ import { DataTypes, Model } from 'sequelize'
 
 export class Categories extends Model {
   declare id: number
-  declare name:string
+  declare name: string
   declare description: string
+  declare budget_limit: number | null  // ✅ budget limit ต่อเดือน
   declare created_at: Date
 }
 
@@ -16,6 +17,11 @@ Categories.init(
     },
     description: {
       type: DataTypes.STRING(255),
+    },
+    budget_limit: {
+      type: DataTypes.DECIMAL(18, 2),
+      allowNull: true,
+      defaultValue: null,
     },
     created_at: {
       type: DataTypes.DATE

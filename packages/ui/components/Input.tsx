@@ -3,57 +3,48 @@ import styled from "styled-components";
 import { Control } from "react-hook-form";
 
 const InputWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-  width: 100%;
-  padding: 0.5rem;
+  display: flex; flex-direction: column; gap: 0.35rem;
+  width: 100%; padding: 0.5rem;
 `
 
 const Label = styled.label`
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--text-secondary, #64748b);
-  text-transform: capitalize;
-  letter-spacing: 0.02em;
+  font-size: 0.8rem; font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: capitalize; letter-spacing: 0.02em;
 `
 
 const StyledInput = styled.input`
-  width: 100%;
-  padding: 0.65rem 0.9rem;
-  font-size: 0.9rem;
-  font-family: 'Kanit', sans-serif;
-  font-weight: 400;
-  color: var(--text-primary, #0f172a);
-  background: var(--bg-surface, #ffffff);
-  border: 1.5px solid var(--border, #e8ecf4);
-  border-radius: var(--radius-md, 12px);
+  width: 100%; padding: 0.65rem 0.9rem;
+  font-size: 0.9rem; font-family: 'Kanit', sans-serif; font-weight: 400;
+  color: var(--text-primary);
+  background: var(--bg-surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
   outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: border-color var(--transition), box-shadow var(--transition);
 
   &:focus {
-    border-color: var(--primary, #6366f1);
-    box-shadow: 0 0 0 3px var(--primary-glow, rgba(99,102,241,0.15));
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-glow);
+    background: var(--bg-surface);
   }
 
-  &::placeholder {
-    color: var(--text-muted, #94a3b8);
-  }
+  &::placeholder { color: var(--text-muted); }
+
+  &[type="date"] { color: var(--text-primary); }
 `
 
 const ErrorMsg = styled.p`
-  font-size: 0.75rem;
-  color: var(--danger, #ef4444);
-  margin-top: 0.1rem;
+  font-size: 0.75rem; color: var(--danger); margin-top: 0.1rem;
 `
 
 export function Input(props: {
   field: string;
-  register: any,
-  type?: string
-  errors: any
-  control: Control<any,any>
-  placeholder?: string
+  register: any;
+  type?: string;
+  errors: any;
+  control: Control<any, any>;
+  placeholder?: string;
 }): JSX.Element {
   const { register, field } = props
 
@@ -62,7 +53,6 @@ export function Input(props: {
       <Label>{field}</Label>
       <StyledInput
         {...register(field)}
-        control={props.control}
         placeholder={props.placeholder || `กรอก ${field}`}
         type={props.type}
       />

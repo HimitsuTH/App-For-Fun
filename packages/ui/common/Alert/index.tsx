@@ -1,49 +1,55 @@
-
-import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 // import Router from 'next/router'
-import { AxiosResponse } from 'axios'
+import { AxiosResponse } from "axios";
 
-const MySwal = withReactContent(Swal)
+const MySwal = withReactContent(Swal);
 
 const LoadingComponent = () => {
   return (
-    <div style={{ width: '5em', height: '5em', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        Loading . . .
+    <div
+      style={{
+        width: "5em",
+        height: "5em",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      Loading . . .
     </div>
-  )
-}
+  );
+};
 
 export const LoadingAlert = () => {
   const handleSelectAlert = () => {
     return MySwal.fire({
-    //   customClass: {
-    //     popup: `${styles.loadingPopup}`,
-    //     icon: `${styles.icon}`,
-    //   },
-    //   backdrop: `${colors.BLACK}DA`,
+      //   customClass: {
+      //     popup: `${styles.loadingPopup}`,
+      //     icon: `${styles.icon}`,
+      //   },
+      //   backdrop: `${colors.BLACK}DA`,
       html: <LoadingComponent />,
       allowOutsideClick: false,
       showCloseButton: false,
       showConfirmButton: false,
       showCancelButton: false,
-    })
-  }
-  return handleSelectAlert()
-}
-
+    });
+  };
+  return handleSelectAlert();
+};
 
 const Alert = (props: any) => {
   const handleUnauthorize = () => {
-    console.log('-test---------replace router---->')
+    console.log("-test---------replace router---->");
     // Router.push('/login')
-  }
+  };
 
   const handleRedirect = () => {
     // Router.push(props.data.data.payload.redirect_path)
-    Swal.close()
-  }
+    Swal.close();
+  };
 
   const handleSelectAlert = (response: AxiosResponse) => {
     switch (response?.status) {
@@ -60,36 +66,32 @@ const Alert = (props: any) => {
           // html: <SuccessModalComponent title={response?.data?.res_desc || 'ทำรายการสำเร็จ'} />,
           didOpen: () => {
             setTimeout(() => {
-              Swal.close()
-            }, 3000)
+              Swal.close();
+            }, 3000);
           },
         }).then((result) => {
           if (result.isConfirmed) {
             try {
               if (props.onConfirmed) {
-                props.onConfirmed()
+                props.onConfirmed();
               }
-            } catch (err) {
-
-            }
+            } catch (err) {}
           }
           if (result.isDismissed) {
             try {
               if (props.onConfirmed) {
-                props.onConfirmed()
+                props.onConfirmed();
               }
-            } catch (err) {
-
-            }
+            } catch (err) {}
           }
-        })
+        });
       case 401:
         return MySwal.fire({
-          icon: 'info',
+          icon: "info",
           text: response.data.message,
           // text: 'กรุณาเข้าสู่ระบบ',
           // confirmButtonColor: colors.PRIMARY,
-          confirmButtonAriaLabel: 'OK',
+          confirmButtonAriaLabel: "OK",
           // backdrop: `${colors.BLACK}DA`,
           // customClass: {
           //   confirmButton: `${styles.loginButton}`,
@@ -99,20 +101,20 @@ const Alert = (props: any) => {
           // },
           didOpen: () => {
             setTimeout(() => {
-              Swal.close()
-              handleUnauthorize()
-            }, 3000)
-            MySwal.hideLoading()
+              Swal.close();
+              handleUnauthorize();
+            }, 3000);
+            MySwal.hideLoading();
           },
         }).then((res) => {
           //
-        })
+        });
       case 403:
         return MySwal.fire({
-          icon: 'error',
-          text: response.data.message || 'FORBIDDEN',
+          icon: "error",
+          text: response.data.message || "FORBIDDEN",
           // confirmButtonColor: colors.DANGER,
-          confirmButtonText: 'OK',
+          confirmButtonText: "OK",
           // backdrop: `${colors.BLACK}DA`,
           // customClass: {
           //   confirmButton: `${styles.confirmButton}`,
@@ -121,7 +123,7 @@ const Alert = (props: any) => {
           //   icon: `${styles.icon}`,
           // },
           didOpen: () => {
-            MySwal.hideLoading()
+            MySwal.hideLoading();
           },
         }).then((result) => {
           // if (result.isConfirmed) {
@@ -130,27 +132,23 @@ const Alert = (props: any) => {
           if (result.isConfirmed) {
             try {
               if (props.onConfirmed) {
-                props.onConfirmed()
+                props.onConfirmed();
               }
-            } catch (err) {
-
-            }
+            } catch (err) {}
           } else if (result.dismiss) {
             try {
               if (props.onDismissed) {
-                props.onDismissed()
+                props.onDismissed();
               }
-            } catch (err) {
-
-            }
+            } catch (err) {}
           }
-        })
+        });
       case 500:
         return MySwal.fire({
-          icon: 'error',
-          text:  `${response?.data?.message}`,
-          confirmButtonColor: "#333",
-          confirmButtonText: 'OK',
+          icon: "error",
+          text: `${response?.data?.message}`,
+          confirmButtonColor: "#475569",
+          confirmButtonText: "OK",
           // backdrop: `${colors.BLACK}DA`,
           // customClass: {
           //   confirmButton: `${styles.confirmButton}`,
@@ -159,34 +157,30 @@ const Alert = (props: any) => {
           //   icon: `${styles.icon}`,
           // },
           didOpen: () => {
-            MySwal.hideLoading()
+            MySwal.hideLoading();
           },
         }).then((result) => {
           if (result.isConfirmed) {
             try {
               if (props.onConfirmed) {
-                props.onConfirmed()
+                props.onConfirmed();
               }
-            } catch (err) {
-
-            }
+            } catch (err) {}
           } else if (result.dismiss) {
             try {
               if (props.onDismissed) {
-                props.onDismissed()
+                props.onDismissed();
               }
-            } catch (err) {
-
-            }
+            } catch (err) {}
           }
-        })
+        });
       case 302:
-        if (response.data?.res_code === '0122') {
+        if (response.data?.res_code === "0122") {
           return MySwal.fire({
-            icon: 'error',
+            icon: "error",
             // text: response?.data?.res_desc || resultValidation('0001').message,
             // confirmButtonColor: colors.DANGER,
-            confirmButtonText: 'OK',
+            confirmButtonText: "OK",
             // backdrop: `${colors.BLACK}DA`,
             // customClass: {
             //   confirmButton: `${styles.confirmButton}`,
@@ -195,21 +189,20 @@ const Alert = (props: any) => {
             //   icon: `${styles.icon}`,
             // },
             didOpen: () => {
-              MySwal.hideLoading()
+              MySwal.hideLoading();
             },
           }).then((result) => {
             try {
-              handleRedirect()
-            } catch (err) {
-            }
-          })
+              handleRedirect();
+            } catch (err) {}
+          });
         } else {
           return MySwal.fire({
-            icon: 'error',
+            icon: "error",
             text: `${response.data.message}`,
             // text: response?.data?.res_desc || resultValidation('0001').message,
             // confirmButtonColor: colors.DANGER,
-            confirmButtonText: 'OK',
+            confirmButtonText: "OK",
             // backdrop: `${colors.BLACK}DA`,
             // customClass: {
             //   confirmButton: `${styles.confirmButton}`,
@@ -218,35 +211,31 @@ const Alert = (props: any) => {
             //   icon: `${styles.icon}`,
             // },
             didOpen: () => {
-              MySwal.hideLoading()
+              MySwal.hideLoading();
             },
           }).then((result) => {
             if (result.isConfirmed) {
               try {
                 if (props.onConfirmed) {
-                  props.onConfirmed()
+                  props.onConfirmed();
                 }
-              } catch (err) {
-
-              }
+              } catch (err) {}
             } else if (result.dismiss) {
               try {
                 if (props.onDismissed) {
-                  props.onDismissed()
+                  props.onDismissed();
                 }
-              } catch (err) {
-
-              }
+              } catch (err) {}
             }
-          })
+          });
         }
       default:
         return MySwal.fire({
-          icon: 'error',
-          text: `${response.data.message }`,
+          icon: "error",
+          text: `${response.data.message}`,
           // text: response?.data?.res_desc || resultValidation('0001').message,
           // confirmButtonColor: colors.DANGER,
-          confirmButtonText: 'OK',
+          confirmButtonText: "OK",
           // backdrop: `${colors.BLACK}DA`,
           // customClass: {
           //   confirmButton: `${styles.confirmButton}`,
@@ -255,30 +244,26 @@ const Alert = (props: any) => {
           //   icon: `${styles.icon}`,
           // },
           didOpen: () => {
-            MySwal.hideLoading()
+            MySwal.hideLoading();
           },
         }).then((result) => {
           if (result.isConfirmed) {
             try {
               if (props.onConfirmed) {
-                props.onConfirmed()
+                props.onConfirmed();
               }
-            } catch (err) {
-
-            }
+            } catch (err) {}
           } else if (result.dismiss) {
             try {
               if (props.onDismissed) {
-                props.onDismissed()
+                props.onDismissed();
               }
-            } catch (err) {
-
-            }
+            } catch (err) {}
           }
-        })
+        });
     }
-  }
-  return handleSelectAlert(props.data)
-}
+  };
+  return handleSelectAlert(props.data);
+};
 
-export default Alert
+export default Alert;

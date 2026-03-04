@@ -1,45 +1,36 @@
 import axios from 'axios'
 import { useQuery } from '@tanstack/react-query'
 import { redirect } from 'next/navigation';
-// import { clearUserAction, setUserAction } from '../../store/actions/user.action'
 import { cleanUser, setUser } from '../../store/slices/user.slice'
 import Swal from 'sweetalert2'
 
-const host = "http://localhost"
-const port = 8000
+// ✅ เรียกผ่าน Next.js API proxy แทน Express โดยตรง
+// → แก้ปัญหา cross-origin cookie (browser 3000 → Express 8000)
+// → Next.js server forward cookie header ให้อัตโนมัติ
+const PROXY = '/api'
 
-export const getProfile = async (dispatch?:any) => {
-    // const router = useRouter()
+export const getProfile = async (dispatch?: any) => {
     try {
-        console.log('><<><><><><><><><>START GET PROFILE<><><><<<>1<><><><>')
+        console.log('>>>> START GET PROFILE <<<<')
 
-        const data = await axios.get(`${host}:${port}/profile`, {
-            withCredentials: true, 
+        const data = await axios.get(`${PROXY}/profile`, {
+            withCredentials: true,   // ส่ง cookie ไปให้ Next.js API route
         })
 
-         console.log('><<><><><><><><><>START GET PROFILE<><><><<<2><><><><>')
-        // Swal.close()
-        console.log('DATA----------------->',data)
         if (!data.data) {
             dispatch(cleanUser())
             throw new Error('No user data received');
         }
 
         dispatch(setUser(data.data))
-
-        console.log('----data.data---[][][][][][][][][][][][][][][-->',data.data)
         Swal.close()
-        return data.data 
+        return data.data
 
-    } catch (error : any) {
+    } catch (error: any) {
         Swal.close()
-        console.log('----------------_ERORORORORO_------------------')
-        // router.replace('/login')
-        console.log('--------------1-----2-3-4-5-----------')
         dispatch(cleanUser())
         console.error('Profile fetch error:', error);
-        redirect('/login')
-        
+        throw new error
     }
 };
 
@@ -102,7 +93,7 @@ export const getWallet = async (user_id:any) => {
     try {
         console.log('><<><><><><><><><>START GET WALLET<><><><<<>1<><><><>',user_id)
 
-        const data = await axios.post(`${host}:${port}/wallet`,{
+        const data = await axios.post(`${PROXY}/wallet`,{
             "user_id": user_id
         }, {
             withCredentials: true, 

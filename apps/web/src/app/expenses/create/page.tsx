@@ -3,15 +3,12 @@ import withAuthenticated from "../../../hocs/with-auth-hoc";
 import CreateReceipts from 'ui/components/expenses/Form'
 import { MainContent } from 'ui/components/Main'
 
-
-
-const TopUp = () => {
+const CreateExpensePage = () => {
   return (
     <MainContent>
-      <h1>ADD Receipts</h1>
-      <CreateReceipts/>
+      <CreateReceipts />
     </MainContent>
   );
 };
 
-export default withAuthenticated(TopUp);
+export default withAuthenticated(CreateExpensePage);

@@ -11,10 +11,10 @@ const router = express.Router();
 
 router.use("/", indexRouter);
 router.use("/auth", authRouter);
-router.use("/expense",middlewareHelper.userAuth(), middlewareHelper.checkActiveSession, expenseRouter);
-router.use("/categories",middlewareHelper.userAuth(), middlewareHelper.checkActiveSession, categoryRouter);
-router.use("/profile",middlewareHelper.userAuth(), middlewareHelper.checkActiveSession, profileRouter);
-router.use("/wallet",middlewareHelper.userAuth(), middlewareHelper.checkActiveSession, walletRouter);
+router.use("/expense",middlewareHelper.userAuth(), expenseRouter);
+router.use("/categories",middlewareHelper.userAuth(), categoryRouter);
+router.use("/profile",middlewareHelper.userAuth(), profileRouter);
+router.use("/wallet",middlewareHelper.userAuth(), walletRouter);
 
 router.get("/ping", (req, res) => {
   res.json({ test: "pong" });

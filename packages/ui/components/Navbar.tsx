@@ -2,106 +2,70 @@
 
 import { ReactNode } from "react";
 import { useAppSelector, useAppDispatch } from "../store/hooks";
-
 import { useRouter } from 'next/navigation'
 import { UserStatus } from "./status";
 import { logoutRequest } from 'ui/utils/requests/auth'
-import { LinkComponent } from "./Link";
-
 import styled from 'styled-components'
 
 export const Nav = styled.div`
-  overflow: hidden;
-  // padding: 0.5rem;
-  // display: flex;
-  // flex-direction: row;
-  // justify-content: space-between;
-
-  transition: all ease 0.2s;
-
-  height: 4em;
-  background-color: white;
-  display: grid;
-  grid-template-columns: 1fr auto;
+  height: var(--navbar-height);
+  background: var(--navbar-bg);
+  border-bottom: 1px solid var(--navbar-border);
+  display: flex;
   align-items: center;
+  justify-content: space-between;
   position: fixed;
   top: 0;
-  left: 0;
-  width: 100vw;
-  box-sizing: border-box;
-  padding-left: calc(80px + 1em);
+  left: var(--sidebar-width);
+  right: 0;
+  padding: 0 1.5rem;
   z-index: 101;
+  box-shadow: var(--shadow-xs);
+  transition: left var(--transition);
 
-  @media screen and (max-width: 960px) {
-    padding-left: calc(50px + 1em);
-  }
-
-  @media screen and (max-width: 768px) {
-    display: flex;
-    justify-content: space-around;
-    padding-left: 0;
-    // justify-content: space-between;
-  }
+  @media screen and (max-width: 768px) { left: 64px; }
+`
+const NavLeft = styled.div`display: flex; align-items: center; gap: 0.75rem;`
+const NavBrand = styled.div`
+  font-weight: 700; font-size: 1rem;
+  color: var(--primary); letter-spacing: -0.02em;
+`
+const NavRight = styled.div`display: flex; align-items: center; gap: 0.75rem;`
+const UserEmail = styled.span`
+  font-size: 0.82rem; color: var(--text-muted); font-weight: 500;
+`
+const LogoutBtn = styled.button`
+  padding: 0.4rem 1rem; font-size: 0.8rem; font-weight: 600;
+  font-family: 'Kanit', sans-serif;
+  background: var(--danger-light); color: var(--danger);
+  border: 1px solid rgba(239,68,68,0.2);
+  border-radius: var(--radius-sm); cursor: pointer;
+  transition: all var(--transition);
+  &:hover { background: var(--danger); color: #fff; border-color: var(--danger); }
 `
 
-export const NavList = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 0.5rem;
-  margin-right: 1rem;
-
-`
-
-interface NavbarProps {
-  children?: ReactNode;
-  className?: string;
-}
-
-
+interface NavbarProps { children?: ReactNode; className?: string; }
 
 export const Navbar = ({ children, className }: NavbarProps) => {
   const { data } = useAppSelector((state) => state.user);
   const router = useRouter()
   const dispatch = useAppDispatch()
-  console.log("user---> web test ---->", data);
+
   const onLogout = async () => {
-    try {
-      logoutRequest(dispatch)
-      router.push('/login')
-      console.log('Logout successful');
-    } catch(err){
-      console.error('Logout error:', err);
-    }
+    logoutRequest(dispatch)
+    router.push('/login')
   };
-  const user = data;
+
   return (
-    <Nav className={`${className}`}>
-      <div>
-        <LinkComponent title="Home" isHome={true}/>
-      </div>
-      <NavList>
-        <UserStatus status={user?.status}/>
-        <p>{user?.email}</p>
-        <button
-          onClick={onLogout}
-          style={{
-            padding: "10px 20px",
-            fontSize: "16px",
-            backgroundColor: "#f44336",
-            color: "white",
-            border: "none",
-            borderRadius: "5px",
-            cursor: "pointer",
-            boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
-            transition: "background-color 0.3s ease",
-          }}
-          onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#da190b")}
-          onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#f44336")}
-        >
-          Logout
-        </button>
-      </NavList>
+    <Nav className={className}>
+      <NavLeft>
+        <NavBrand>💰 ExpensesApp</NavBrand>
+      </NavLeft>
+      <NavRight>
+        <UserStatus status={data?.status} />
+        <UserEmail>{data?.email}</UserEmail>
+        <LogoutBtn onClick={onLogout}>ออกจากระบบ</LogoutBtn>
+      </NavRight>
     </Nav>
   );
 };

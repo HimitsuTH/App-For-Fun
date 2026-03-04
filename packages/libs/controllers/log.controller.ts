@@ -8,7 +8,7 @@ type errorData = {
 };
 
 export const errorHandler = (err: errorData,req: Request,res: Response,next: NextFunction) => {
-  const statusCode = err.statusCode || 500;
+  const statusCode = (err as any).status || err.statusCode || 500;
 
   console.log('---------ERROR-------')
 

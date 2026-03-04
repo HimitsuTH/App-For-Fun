@@ -22,8 +22,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
-    credentials: true,
+    origin: ["http://localhost:3000", "http://localhost:3001"],
+    credentials: true,      // จำเป็นสำหรับ cookie cross-origin
+    methods: ["GET","POST","PUT","PATCH","DELETE","OPTIONS"],
+    allowedHeaders: ["Content-Type","Authorization","Cookie"],
   })
 );
 
@@ -35,9 +37,10 @@ app.use(
     resave: true,
     saveUninitialized: false,
     cookie: {
-      maxAge: 1000 * 60 * 60 * 24, // 1 day
-      secure: ENVIRONMENT === "production", // Set to true only if using HTTPS in production
-      sameSite: "Lax", // 'Lax' allows cookies on top-level navigations and POST requests from other sites
+      maxAge: 1000 * 60 * 60 * 24,
+      secure: false,
+      sameSite: "lax" as const,  // lax ใช้ได้บน http, ทำงานได้เพราะ request ผ่าน Next.js proxy (same-origin)
+      httpOnly: true,
     },
   })
 );
